@@ -32,18 +32,18 @@ const useStyles = createUseStyles({
         paddingTop: '120px',
     },
     grid: {
-        width: 'calc(90vh + 55px)',
+        width: '54vw',
         margin: '0 auto'
     },
     tile: {
-        minWidth: '30vh',
-        maxWidth: '30vh',
-        minHeight: '30vh',
-        maxHeight: '30vh',
+        minWidth: '16vw',
+        maxWidth: '16vw',
+        minHeight: '16vw',
+        maxHeight: '16vw',
 
         borderRadius: '5px',
         // border: '1px solid #000000',
-        marginBottom: '20px',
+        marginBottom: '2vw',
         background: `radial-gradient(${colors.joeGrayBlue}, ${colors.joeDarkGrayBlue})`,
     },
     tileIcon: {
@@ -66,8 +66,8 @@ export const HomeGrid = () => {
                 return (
                     <a key={x.icon} className={styles.tile}
                         target={"_blank"} href={x.link}
-                        style={{marginRight: i % 2 == 0 && i != 0 ? '0px' : '20px'}}>
-                            <img className={styles.tileIcon} src={x.icon} />
+                        style={{marginRight: i % 2 === 0 && i !== 0 ? '0px' : '2vw'}}>
+                            <img className={styles.tileIcon} src={x.icon} alt={''} />
                     </a>
                 )
             })}
