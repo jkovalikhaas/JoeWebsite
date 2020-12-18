@@ -2,8 +2,9 @@ import React from 'react';
 import '../index.css';
 import { createUseStyles } from 'react-jss';
 import colors from '../globals/colors.js';
+import { isMobile } from 'react-device-detect';
 import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
+import NavBar from './NavBar.jsx';
 
 import ftp from '../assets/images/ftp-icon.jpg';
 import gitW from '../assets/images/github-icon-white.png';
@@ -27,23 +28,25 @@ const linkList = [
     }
 ];
 
+const tileSize = isMobile ? '54vw' : '16vw';
+
 const useStyles = createUseStyles({
     content: {
-        paddingTop: '120px',
+
     },
     grid: {
         width: '54vw',
-        margin: '0 auto'
+        margin: '120px auto 0 auto' 
     },
     tile: {
-        minWidth: '16vw',
-        maxWidth: '16vw',
-        minHeight: '16vw',
-        maxHeight: '16vw',
+        minWidth: tileSize,
+        maxWidth: tileSize,
+        minHeight: tileSize,
+        maxHeight: tileSize,
 
         borderRadius: '5px',
         // border: '1px solid #000000',
-        marginBottom: '2vw',
+        marginBottom: '4vw',
         background: `radial-gradient(${colors.joeGrayBlue}, ${colors.joeDarkGrayBlue})`,
     },
     tileIcon: {
@@ -60,18 +63,18 @@ export const HomeGrid = () => {
 
     return (
         <div className={styles.content}>
+            <NavBar />
             <div className={styles.grid}>
-            <GridList cols={3}>
-            {linkList.map((x, i) => {
-                return (
-                    <a key={x.icon} className={styles.tile}
-                        target={"_blank"} href={x.link}
-                        style={{marginRight: i % 2 === 0 && i !== 0 ? '0px' : '2vw'}}>
-                            <img className={styles.tileIcon} src={x.icon} alt={''} />
-                    </a>
-                )
-            })}
-            </GridList>
+                <GridList cols={isMobile ? 1 : 3}>
+                {linkList.map((x, i) => {
+                    return (
+                        <a key={x.icon} className={styles.tile} target={"_blank"} href={x.link}
+                           style={{marginRight: (i % 2 === 0 && i !== 0) || isMobile ? '0px' : '2vw'}}>
+                                <img className={styles.tileIcon} src={x.icon} alt={''} />
+                        </a>
+                    )
+                })}
+                </GridList>
             </div>
         </div>
     )

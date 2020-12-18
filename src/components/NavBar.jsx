@@ -1,6 +1,7 @@
 import React from 'react';
 import '../index.css';
 import { createUseStyles } from 'react-jss';
+import { isMobile } from 'react-device-detect';
 import colors from '../globals/colors.js';
 
 const useStyles = createUseStyles({
@@ -11,11 +12,10 @@ const useStyles = createUseStyles({
         display: 'flex',
     },
     title: {
-        fontSize: '32px',
+        fontSize: isMobile ? '20px' : '32px',
         fontWeight: '500',
         color: colors.joeWhite,
-        marginTop: '12px',
-        marginLeft: '10%',
+        margin: '12px auto 0 auto',
     },
 });
 
