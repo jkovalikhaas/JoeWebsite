@@ -63,7 +63,6 @@ export const HomeGrid = () => {
 
     return (
         <div className={styles.content}>
-            <NavBar />
             <div className={styles.grid}>
                 <GridList cols={isMobile ? 1 : 3}>
                 {linkList.map((x, i) => {
