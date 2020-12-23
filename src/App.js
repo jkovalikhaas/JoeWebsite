@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./index.css";
-import AppContainer from "./AppContainer.jsx";
+import HomeContainer from "./HomeContainer.jsx";
 
 class App extends Component {
   constructor(props) {
@@ -9,7 +9,7 @@ class App extends Component {
     this.state = {};
   }
   render() {
-    return <AppContainer />;
+    return <HomeContainer />;
   }
 }
 

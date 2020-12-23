@@ -13,7 +13,7 @@ const useStyles = createUseStyles({
     },
 });
 
-const AppContainer = () => {
+const HomeContainer = () => {
     const styles = useStyles();
 
     return (
@@ -23,4 +23,4 @@ const AppContainer = () => {
     );
 };
 
-export default AppContainer;
+export default HomeContainer;
