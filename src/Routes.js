@@ -1,7 +1,8 @@
 import React from 'react';
-import HomeContainer from './HomeContainer.jsx';
-import { NavBar } from './components/NavBar';
 import { Route, Switch, Redirect } from 'react-router-dom';
+import HomeContainer from './containers/HomeContainer.jsx';
+import MazeContainer from './containers/MazeContainer.jsx';
+import { NavBar } from './components/NavBar';
 
 export const Routes = () => {
   return (
@@ -12,6 +13,7 @@ export const Routes = () => {
         <Route exact path="/">
           <Redirect to="/home" />
         </Route>
+        <Route exact path="/maze" component={MazeContainer} />
       </Switch>
     </div>
   );

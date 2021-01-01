@@ -6,16 +6,17 @@ import colors from '../globals/colors.js';
 
 const useStyles = createUseStyles({
     bar: {
-        height: '60px',
+        height: '8vh',
         backgroundColor: colors.joeDarkBlue,
         boxShadow: '0 10px 15px rgba(0, 0, 0, 0.2)',
         display: 'flex',
     },
     title: {
-        fontSize: isMobile ? '20px' : '32px',
+        fontSize: '4vh',
         fontWeight: '500',
         color: colors.joeWhite,
-        margin: '12px auto 0 auto',
+        margin: '1.5vh auto 0 auto',
+        textDecoration: 'none'
     },
 });
 
@@ -24,9 +25,9 @@ export const NavBar = () => {
 
     return (
         <div className={styles.bar}>
-            <div className={styles.title}>
+            <a className={styles.title} href={"/home"}>
                 Joe Kovalik-Haas
-            </div>
+            </a>
         </div>
     );
 };

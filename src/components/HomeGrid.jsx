@@ -4,7 +4,6 @@ import { createUseStyles } from 'react-jss';
 import colors from '../globals/colors.js';
 import { isMobile } from 'react-device-detect';
 import GridList from '@material-ui/core/GridList';
-import NavBar from './NavBar.jsx';
 
 import ftp from '../assets/images/ftp-icon.jpg';
 import gitW from '../assets/images/github-icon-white.png';
