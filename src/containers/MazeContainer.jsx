@@ -18,6 +18,7 @@ const useStyles = createUseStyles({
         maxWidth: '100vw',
         height: '92vh',
         overflow: 'hidden',
+        touchAction: 'none'
     },
     nav: {
         height: '6vh',
