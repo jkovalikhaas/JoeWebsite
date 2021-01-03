@@ -27,7 +27,7 @@ const Button = (props) => {
     const styles = useStyles();
 
     return (
-        <div className={styles.button} onClick={action} 
+        <div className={styles.button} onMouseDown={action} 
              style={{backgroundColor: bkgColor, color: fgdColor}}>
             {title}
         </div>

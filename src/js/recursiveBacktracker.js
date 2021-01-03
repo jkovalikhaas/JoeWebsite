@@ -30,7 +30,7 @@ const generateMaze = (grid, start, seen) => {
         else {
             const randNeighbor = neighbors[randInt(neighbors.length)]; // picks random neighbor
             const { key, value } = randNeighbor;
-            const { tile, open } = value;
+            const { tile } = value;
             const nextTile = grid[tile.index];
             // update stack/visited array
             stack = R.append(nextTile, stack);

@@ -1,5 +1,19 @@
-import { R, counting, randInt } from '../globals/variables';
-import backtracker from './recursiveBacktracker.js';
+import { R, counting } from '../globals/variables';
+
+// sets grid value based on an index
+export const setValue = (grid, index, value) => {
+    return R.assocPath([index, 'value'], value, grid);
+}
+
+// checks if certain path is open
+export const isOpen = (tile, dir) => {
+    return tile.neighbors && R.path(['neighbors', dir, 'open'], tile);
+}
+
+// returns neighbor of tile in givien direction
+export const getNeighbor = (tile, dir) => {
+    return tile.neighbors && R.path(['neighbors', dir, 'tile'], tile);
+}
 
 // object to hold neighbor value and if has open 'path'
 const neighbor = (value) => {
@@ -32,20 +46,12 @@ const Tile = (x, y, index, value = 0) => {
 
 // creates 'backend' grid of tiles to hold full information of grid (not fully visible to user)
 const Grid = (width = 10, height = 10) => {
-    const size = width * height;
-
-    var grid = counting(size).map(index => {
+    var grid = counting(width * height).map(index => {
         return (
             Tile(index % width, Math.floor(index / height), index)
         )
     });
-
     grid = addNeighbors(grid, width, height);
-    
-    // random start to maze
-    const start = grid[randInt(width * height)];
-    // set maze path
-    grid = backtracker(grid, width, height, start);
 
     return grid;
 }

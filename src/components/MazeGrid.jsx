@@ -18,8 +18,8 @@ const MazeGrid = (props) => {
     const styles = useStyles();
 
     const {
-        width = 10,
-        height = 10,
+        width,
+        height,
         grid
     } = props;
 
@@ -28,7 +28,7 @@ const MazeGrid = (props) => {
            <GridList cols={width}>
                 {grid.map(tile => {
                    return (
-                       <Tile tile={tile} />
+                       <Tile tile={tile} key={tile.index} />
                    ) 
                 })}
            </GridList>

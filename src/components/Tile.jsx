@@ -15,11 +15,11 @@ const useStyles = createUseStyles({
 const tileColors = {
     default: colors.joeLightBlue,
     0: colors.joeLightBlue,
-    current: '',
-    start: '',
-    end: '',
-    visited: '',
-    solution: '',
+    current: colors.joePurple,
+    start: colors.joePink,
+    last: colors.joeRed,
+    visited: colors.joeViolet,
+    solution: colors.joeGreen,
 }
 
 const Tile = (props) => {
@@ -36,11 +36,7 @@ const Tile = (props) => {
         neighbors
     } = tile;
 
-    const [state, setState] = useState({
-        value: value
-    });
-
-    const isOpen = (dir) => R.path([dir, 'open'], neighbors) ? colors.joeLightBlue : colors.joeDarkBlue;
+    const isOpen = (dir) => R.path([dir, 'open'], neighbors) ? tileColors[value] : colors.joeDarkBlue;
 
     return (
         <div key={`${x}, ${y}`} className={styles.base}
