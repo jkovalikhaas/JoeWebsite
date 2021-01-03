@@ -12,6 +12,11 @@ export const counting = (n) => Array.from(Array(n).keys());
 
 export const randInt = (n) => Math.floor(Math.random() * n);
 
+// makes a color transulcent
+export const translucify = (color) => {
+    return color + '80';
+}
+
 // gets opposite direction
 export const oppositeDir = (dir) => {
     if(dir === 'north') return 'south';

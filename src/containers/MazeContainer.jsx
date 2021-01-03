@@ -5,7 +5,7 @@ import { createUseStyles } from 'react-jss';
 import { Joystick } from 'react-joystick-component';
 import { isMobile } from "react-device-detect";
 import colors from '../globals/colors.js';
-import { R, randInt } from '../globals/variables.jsx';
+import { R, randInt, translucify } from '../globals/variables.jsx';
 import generateGrid, { setValue, isOpen, getNeighbor } from '../js/generateGrid.js';
 import backtracker from '../js/recursiveBacktracker.js';
 import longestPath from '../js/longestPath.js';
@@ -156,10 +156,10 @@ const MazeContainer = () => {
             <div className={styles.joystick}>
                 <Joystick 
                     size={100} 
-                    baseColor={colors.joeGrayBlue} 
-                    stickColor={colors.joeDarkBlue} 
+                    baseColor={translucify(colors.joeGrayBlue)} 
+                    stickColor={translucify(colors.joeDarkBlue)} 
                     disabled={!state.current || state.finished}
-                    throttle={200}
+                    throttle={150}
                     move={(e) => {
                         const dirs = {
                             'FORWARD': 'ArrowUp',
