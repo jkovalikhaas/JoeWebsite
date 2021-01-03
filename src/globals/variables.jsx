@@ -7,12 +7,6 @@ export const height = window.innerHeight;
 export const isVertical = height > width;
 export const tileSize = isVertical ? '8vw' : '6vh';
 
-// pass a ref and returns it center (x ,y)
-export const divCenter = (elem) => {
-    const { right, bottom, width, height } = elem.getBoundingClientRect();
-    return { centerX: right - width / 2, centerY: bottom - height / 2 };
-}
-
 export const zeros = (n) => Array(n).fill(0);
 export const counting = (n) => Array.from(Array(n).keys());
 

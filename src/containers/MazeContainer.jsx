@@ -2,13 +2,13 @@
 /* eslint-disable eqeqeq */
 import React, { useEffect, useState, useRef } from 'react';
 import { createUseStyles } from 'react-jss';
+import { Joystick } from 'react-joystick-component';
 import { isMobile } from "react-device-detect";
 import colors from '../globals/colors.js';
 import { R, randInt } from '../globals/variables.jsx';
 import generateGrid, { setValue, isOpen, getNeighbor } from '../js/generateGrid.js';
 import backtracker from '../js/recursiveBacktracker.js';
 import longestPath from '../js/longestPath.js';
-import touchLocation from '../js/touchLocation.js';
 import Button from '../components/Button.jsx';
 import MazeGrid from '../components/MazeGrid.jsx';
 
@@ -26,6 +26,11 @@ const useStyles = createUseStyles({
         justifyContent: 'space-between',
         backgroundColor: colors.joeDarkGrayBlue
     },
+    joystick: {
+        position: 'absolute',
+        left: 'calc(50% - 50px)',
+        bottom: '10vh',
+    }
 });
 
 // movement controller
@@ -87,8 +92,6 @@ const MazeContainer = () => {
         finished: false
     });
 
-    const mazeRef = useRef(null);   // holds base for maze
-
     // create maze
     useEffect(() => {
         var grid = generateGrid();
@@ -115,15 +118,6 @@ const MazeContainer = () => {
             if(state.current && !state.finished)
                 move(e.key.toString(), state.maze, state.current, setCurrent);
         };
-        if(isMobile && mazeRef.current) {
-            document.ontouchstart = function (e) {
-                const { clientX, clientY } = R.path(['targetTouches', 0], e);
-                const dir = touchLocation(mazeRef.current, clientX, clientY);
-                console.log(dir && state.current && !state.finished)
-                if(dir && state.current && !state.finished)
-                    move(dir, state.maze, state.current, setCurrent);
-            }
-        }
     }, [state.current, state.finished]);
 
     // set current tile
@@ -156,8 +150,25 @@ const MazeContainer = () => {
             <MazeGrid 
                 width={state.width} 
                 height={state.height} 
-                grid={state.maze} 
-                mazeRef={mazeRef} />
+                grid={state.maze} />
+            <div className={styles.joystick}>
+                <Joystick 
+                    size={100} 
+                    baseColor={colors.joeGrayBlue} 
+                    stickColor={colors.joeDarkBlue} 
+                    disabled={!state.current || state.finished}
+                    throttle={200}
+                    move={(e) => {
+                        const dirs = {
+                            'FORWARD': 'ArrowUp',
+                            'BACKWARD': 'ArrowDown', 
+                            'LEFT': 'ArrowLeft',
+                            'RIGHT': 'ArrowRight'
+                        }
+                        move(R.path([e.direction], dirs), state.maze, state.current, setCurrent)
+                    }} >
+                </Joystick>
+            </div>
         </div>
     );
 };

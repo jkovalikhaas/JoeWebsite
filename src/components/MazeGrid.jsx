@@ -20,11 +20,10 @@ const MazeGrid = (props) => {
         width,
         height,
         grid,
-        mazeRef
     } = props;
 
     return (
-        <div id={'maze-grid'} className={styles.base} ref={mazeRef}>
+        <div id={'maze-grid'} className={styles.base}>
            <GridList cols={width}>
                 {grid.map(tile => {
                    return (
