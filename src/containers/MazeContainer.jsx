@@ -151,6 +151,7 @@ const MazeContainer = () => {
                 width={state.width} 
                 height={state.height} 
                 grid={state.maze} />
+            {isMobile &&
             <div className={styles.joystick}>
                 <Joystick 
                     size={100} 
@@ -168,7 +169,7 @@ const MazeContainer = () => {
                         move(R.path([e.direction], dirs), state.maze, state.current, setCurrent)
                     }} >
                 </Joystick>
-            </div>
+            </div>}
         </div>
     );
 };
