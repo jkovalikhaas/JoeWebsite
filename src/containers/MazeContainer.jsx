@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { createUseStyles } from 'react-jss';
 import { isMobile } from "react-device-detect";
 import colors from '../globals/colors.js';
-import { R, randInt, divCenter } from '../globals/variables.jsx';
+import { R, randInt } from '../globals/variables.jsx';
 import generateGrid, { setValue, isOpen, getNeighbor } from '../js/generateGrid.js';
 import backtracker from '../js/recursiveBacktracker.js';
 import longestPath from '../js/longestPath.js';
@@ -118,7 +118,10 @@ const MazeContainer = () => {
         if(isMobile && mazeRef.current) {
             document.ontouchstart = function (e) {
                 const { clientX, clientY } = R.path(['targetTouches', 0], e);
-                console.log(touchLocation(mazeRef.current, clientX, clientY));
+                const dir = touchLocation(mazeRef.current, clientX, clientY);
+                console.log(dir && state.current && !state.finished)
+                if(dir && state.current && !state.finished)
+                    move(dir, state.maze, state.current, setCurrent);
             }
         }
     }, [state.current, state.finished]);
