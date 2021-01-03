@@ -1,12 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
-import React, {useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { createUseStyles } from 'react-jss';
+import { isMobile } from "react-device-detect";
 import colors from '../globals/colors.js';
-import { R, randInt } from '../globals/variables.jsx';
+import { R, randInt, divCenter } from '../globals/variables.jsx';
 import generateGrid, { setValue, isOpen, getNeighbor } from '../js/generateGrid.js';
 import backtracker from '../js/recursiveBacktracker.js';
 import longestPath from '../js/longestPath.js';
+import touchLocation from '../js/touchLocation.js';
 import Button from '../components/Button.jsx';
 import MazeGrid from '../components/MazeGrid.jsx';
 
@@ -22,7 +24,7 @@ const useStyles = createUseStyles({
         margin: '2vh 4vw',
         display: 'flex',
         justifyContent: 'space-between',
-
+        backgroundColor: colors.joeDarkGrayBlue
     },
 });
 
@@ -85,6 +87,8 @@ const MazeContainer = () => {
         finished: false
     });
 
+    const mazeRef = useRef(null);   // holds base for maze
+
     // create maze
     useEffect(() => {
         var grid = generateGrid();
@@ -108,18 +112,20 @@ const MazeContainer = () => {
     // add key effects
     useEffect(() => {
         document.onkeydown = function (e) {
-            state.current && move(e.key.toString(), state.maze, state.current, setCurrent);
+            if(state.current && !state.finished)
+                move(e.key.toString(), state.maze, state.current, setCurrent);
         };
-    }, [state.current]);
+        if(isMobile && mazeRef.current) {
+            document.ontouchstart = function (e) {
+                const { clientX, clientY } = R.path(['targetTouches', 0], e);
+                console.log(touchLocation(mazeRef.current, clientX, clientY));
+            }
+        }
+    }, [state.current, state.finished]);
 
     // set current tile
     const setCurrent = (tile) => {
         if(tile.value == 'start') return;
-        if(tile.value == 'last') {
-            console.log("Yayyyyy");
-            setState(s => ({ ...s, finished: true }));
-            return;
-        }
         // update current tile
         const temp = state.maze.map(x => {
             if(x.index == tile.index) return R.assoc('value', 'current', x);
@@ -131,16 +137,25 @@ const MazeContainer = () => {
             maze: temp,
             current: temp[tile.index]
         }));
+        if(tile.value == 'last') {
+            console.log("Yayyyyy");
+            setState(s => ({ ...s, finished: true }));
+            return;
+        }
     };
 
     return (
-      <div className={styles.contentArea}>
-          <MazeNav
-            resetMaze={() => setState((s) => 
-                ({...s, reset: !s.reset})
-            )} />
-          <MazeGrid width={state.width} height={state.height} grid={state.maze} />
-      </div>
+        <div className={styles.contentArea}>
+            <MazeNav
+                resetMaze={() => setState((s) => 
+                    ({...s, reset: !s.reset})
+                )} />
+            <MazeGrid 
+                width={state.width} 
+                height={state.height} 
+                grid={state.maze} 
+                mazeRef={mazeRef} />
+        </div>
     );
 };
 

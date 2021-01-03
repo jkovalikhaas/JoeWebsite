@@ -1,12 +1,12 @@
 import React, {useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
-import { R } from '../globals/variables.jsx';
+import { R, tileSize } from '../globals/variables.jsx';
 import colors from '../globals/colors.js';
 
 const useStyles = createUseStyles({
     base: {
-        height: '6vh',
-        width: '6vh',
+        height: tileSize,
+        width: tileSize,
         borderStyle: 'solid',
         borderWidth: '2px',
     }
