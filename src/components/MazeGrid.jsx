@@ -16,8 +16,8 @@ const MazeGrid = (props) => {
     const styles = useStyles();
 
     const {
-        width,
-        height,
+        width = 11,
+        height = 11,
         grid,
     } = props;
     return (

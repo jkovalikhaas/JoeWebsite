@@ -10,6 +10,7 @@ import generateGrid, { setValue, isOpen, getNeighbor } from '../js/generateGrid.
 import backtracker from '../js/recursiveBacktracker.js';
 import longestPath from '../js/longestPath.js';
 import Button from '../components/Button.jsx';
+import SizeSlider from '../components/SizeSlider.jsx';
 import MazeGrid from '../components/MazeGrid.jsx';
 import FinishedModal from '../components/FinishedModal.jsx';
 
@@ -67,16 +68,44 @@ const move = (key, maze, current, setCurrent) => {
     }
 }
 
+// returns part of maze that is being shown
+const visibleMaze = (maze, current, width = 11, height = 11) => {
+    const maxX = R.last(maze).x;
+    const maxY = R.last(maze).y;
+    const center = Math.floor(width / 2);
+
+    var startX = 0; var startY = 0;
+
+    if(current.x <= center) startX = 0;
+    else if(current.x >= maxX - center) startX = maxX - width + 1;
+    else startX = current.x - center;
+
+    if(current.y <= center) startY = 0;
+    else if(current.y >= maxY - center) startY = maxY - height + 1;
+    else startY = current.y - center;
+
+    const array = [];
+    // add all tiles to array that are in visible block
+    maze.forEach(tile => {
+        if(tile.x >= startX && tile.x < startX + width &&
+           tile.y >= startY && tile.y < startY + height)
+            array.push(tile);
+    })
+
+    return array;
+}
+
 const MazeNav = (props) => {
     const styles = useStyles();
 
     const {
+        setSize,
         resetMaze
     } = props;
 
     return (
         <div className={styles.nav}>
-            <Button title={'Size'} action={() => console.log('size')}/>
+            <SizeSlider setSize={setSize} />
             <Button title={'Start'} action={() => resetMaze()} />
         </div>
     )
@@ -86,8 +115,8 @@ const MazeContainer = () => {
     const styles = useStyles();
 
     const [state, setState] = useState({
-        width: 10,
-        height: 10,
+        width: 11,
+        height: 11,
         maze: [],
         reset: false,
         current: null,
@@ -106,13 +135,20 @@ const MazeContainer = () => {
         const last = longestPath(grid, state.width, state.height, start);
         grid = setValue(grid, last, 'last');
         // initial state values
-        setState({ 
-            width: 10, height: 10,
+        setState(s => ({
+            ...s,
             maze: grid,
             current: grid[start.index],
+            visible: state.current && visibleMaze(state.maze, state.current),
             finished: false
-        });
+        }));
     }, [state.reset]);
+
+    // update visible maze
+    useEffect(() => {
+        if(state.current)
+            setState(s => ({...s, visible: visibleMaze(state.maze, state.current)}));
+    }, [state.current])
 
     // add key effects
     useEffect(() => {
@@ -144,13 +180,16 @@ const MazeContainer = () => {
     return (
         <div className={styles.contentArea}>
             <MazeNav
+                setSize={(w, h) => setState((s) => 
+                    ({...s, width: w, height: h, reset: !s.reset})
+                )}
                 resetMaze={() => setState((s) => 
                     ({...s, reset: !s.reset})
                 )} />
-            <MazeGrid 
-                width={state.width} 
-                height={state.height} 
-                grid={state.maze} />
+            {state.visible && <MazeGrid 
+                // width={state.width} 
+                // height={state.height} 
+                grid={state.visible} />}
             {isMobile &&
             <div className={styles.joystick}>
                 <Joystick 

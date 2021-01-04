@@ -25,7 +25,8 @@ const useStyles = createUseStyles({
         margin: `${tileSize}px auto 0 auto`,
         borderRadius: '10px',
         boxShadow: '0 10px 15px rgba(0, 0, 0, 0.2)',
-        backgroundColor: colors.joeDarkGrayBlue
+        backgroundColor: colors.joeDarkGrayBlue,
+        cursor: 'pointer'
     }
 });
 
