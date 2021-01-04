@@ -205,7 +205,7 @@ const MazeContainer = () => {
             setTimeout(() => {
                 move(R.path([dir], dirs), state.maze, state.current, setCurrent);
                 first = false;
-            }, first ? 10 : 200);
+            }, first ? 100 : 140);
         },
         preventDefaultTouchmoveEvent: true,
         trackMouse: true
