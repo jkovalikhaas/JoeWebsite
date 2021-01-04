@@ -19,7 +19,7 @@ const useStyles = createUseStyles({
         width: '100vw',
         maxWidth: '100vw',
         height: '90vh',
-        overflow: 'hidden',
+        overflowX: 'hidden',
         touchAction: 'none'
     },
     nav: {
@@ -38,10 +38,11 @@ const gridDimensions = (contentRef, mazeHeight, mazeWidth) => {
 
     const navHeight = R.path(['current', 'firstChild'], contentRef).getBoundingClientRect().height;
     const areaWidth = contentRef.current.getBoundingClientRect().width;
-    const areaHeight = contentRef.current.getBoundingClientRect().height - navHeight;
+    const areaHeight = contentRef.current.getBoundingClientRect().height - navHeight * 2;
 
-    const tileWidth = makeOdd(Math.floor((areaWidth - tileSize * 2) / tileSize));
-    const tileHeight = makeOdd(Math.floor((areaHeight - tileSize * 2) / tileSize));
+    const convert = (n) => makeOdd(Math.floor((n - tileSize * 2) / tileSize));
+    const tileWidth = convert(areaWidth)
+    const tileHeight = convert(areaHeight);
 
     return { tileWidth: Math.min(mazeWidth, tileWidth), tileHeight: Math.min(mazeHeight, tileHeight) }
 }

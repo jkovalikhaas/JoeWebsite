@@ -8,7 +8,7 @@ const useStyles = createUseStyles({
         position: 'absolute',
         top: '18vh',
         right: 0,
-        opacity: '0.5',
+        opacity: '0.7',
         borderRadius: '5px',
         boxShadow: '0 10px 15px rgba(0, 0, 0, 0.2)',
     },
