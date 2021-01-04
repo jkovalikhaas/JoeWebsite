@@ -98,7 +98,7 @@ const MazeContainer = () => {
         var grid = generateGrid();
         // create/set start tile
         const start = grid[randInt(state.width * state.height)];
-        grid = setValue(grid, start.index, 'start');
+        grid = setValue(grid, start.index, 'current');
         // generate maze
         grid = backtracker(grid, state.width, state.height, start);
         // create/set last(finish) tile
@@ -123,7 +123,7 @@ const MazeContainer = () => {
 
     // set current tile
     const setCurrent = (tile) => {
-        if(tile.value == 'start') return;
+        // if(tile.value == 'start') return;
         // update current tile
         const temp = state.maze.map(x => {
             if(x.index == tile.index) return R.assoc('value', 'current', x);

@@ -17,7 +17,7 @@ const tileColors = {
     0: colors.joeLightBlue,
     current: colors.joePurple,
     start: colors.joePink,
-    last: colors.joeRed,
+    last: colors.joePink,
     visited: colors.joeViolet,
     solution: colors.joeGreen,
 }
