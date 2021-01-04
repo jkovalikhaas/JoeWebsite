@@ -3,11 +3,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { createUseStyles } from 'react-jss';
 import { useSwipeable } from "react-swipeable";
+import { isMobile } from 'react-device-detect';
 import colors from '../globals/colors.js';
 import { R, randInt, tileSize, makeOdd } from '../globals/variables.jsx';
 import generateGrid, { setValue, isOpen, getNeighbor } from '../js/generateGrid.js';
 import backtracker from '../js/recursiveBacktracker.js';
 import longestPath from '../js/longestPath.js';
+import solutionPath from '../js/solutionPath.js';
 import Button from '../components/Button.jsx';
 import SizeSlider from '../components/SizeSlider.jsx';
 import MazeGrid from '../components/MazeGrid.jsx';
@@ -18,8 +20,8 @@ const useStyles = createUseStyles({
     contentArea: {
         width: '100vw',
         maxWidth: '100vw',
-        height: '90vh',
-        overflowX: 'hidden',
+        height: isMobile ? '80vh' : '90vh',
+        overflow: 'hidden',
         touchAction: 'none'
     },
     nav: {
@@ -112,7 +114,8 @@ const MazeNav = (props) => {
     const {
         setSize,
         resetMaze,
-        toggleMini
+        toggleMini,
+        toggleSol,
     } = props;
 
     return (
@@ -120,6 +123,7 @@ const MazeNav = (props) => {
             <SizeSlider setSize={setSize} />
             <Button title={'Start'} action={() => resetMaze()} />
             <Button title={'MiniMap'} action={() => toggleMini()} />
+            <Button title={'Solution'} action={() => toggleSol()} />
         </div>
     )
 }
@@ -171,7 +175,7 @@ const MazeContainer = () => {
     useEffect(() => {
         if(state.current)
             setState(s => ({...s, visible: visibleMaze(s.maze, s.current, s.tileWidth, s.tileHeight)}));
-    }, [state.current])
+    }, [state.current]);
 
     // add key effects
     useEffect(() => {
@@ -225,7 +229,8 @@ const MazeContainer = () => {
                 )} 
                 toggleMini={() => setState((s) => 
                     ({...s, showingMini: !s.showingMini})
-                )} />
+                )}
+                toggleSol={() => console.log(solutionPath(state.maze))} />
             {state.visible && 
             <MazeGrid 
                 width={state.tileWidth} 

@@ -1,7 +1,6 @@
 import React from 'react';
 import '../index.css';
 import { createUseStyles } from 'react-jss';
-import { isMobile } from 'react-device-detect';
 import colors from '../globals/colors.js';
 
 const useStyles = createUseStyles({
