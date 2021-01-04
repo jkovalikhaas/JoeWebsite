@@ -19,9 +19,11 @@ const MazeGrid = (props) => {
         width = 11,
         height = 11,
         grid,
+        swipeHandlers
     } = props;
+
     return (
-        <div id={'maze-grid'} className={styles.base}
+        <div id={'maze-grid'} className={styles.base} {...swipeHandlers}
              style={{maxWidth: `${tileSize * width + (width * 4)}px`}}>
            <GridList cols={width}>
                 {grid.map(tile => {

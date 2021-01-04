@@ -2,7 +2,7 @@
 /* eslint-disable eqeqeq */
 import React, { useEffect, useState, useRef } from 'react';
 import { createUseStyles } from 'react-jss';
-import { Joystick } from 'react-joystick-component';
+import { useSwipeable } from "react-swipeable";
 import { isMobile } from "react-device-detect";
 import colors from '../globals/colors.js';
 import { R, randInt, translucify, tileSize } from '../globals/variables.jsx';
@@ -29,11 +29,6 @@ const useStyles = createUseStyles({
         justifyContent: 'space-between',
         backgroundColor: colors.joeDarkGrayBlue
     },
-    joystick: {
-        position: 'absolute',
-        left: 'calc(50% - 50px)',
-        bottom: '10vh',
-    }
 });
 
 // calculates grid dimensions in tiles
@@ -200,6 +195,21 @@ const MazeContainer = () => {
             return;
         }
     };
+    
+    // add swipe movement for mobile
+    const swipeHandlers = useSwipeable({
+        onSwiping: (e) => {
+            const dir = e.dir;
+            const dirs = {'Up': 'ArrowUp', 'Down': 'ArrowDown', 'Left': 'ArrowLeft', 'Right': 'ArrowRight'};
+            var first = true;   // only wait after first move
+            setTimeout(() => {
+                move(R.path([dir], dirs), state.maze, state.current, setCurrent);
+                first = false;
+            }, first ? 10 : 120);
+        },
+        preventDefaultTouchmoveEvent: true,
+        trackMouse: true
+    });
 
     return (
         <div className={styles.contentArea} ref={contentRef}>
@@ -213,26 +223,8 @@ const MazeContainer = () => {
             {state.visible && <MazeGrid 
                 width={state.tileWidth} 
                 height={state.tileHeight} 
-                grid={state.visible} />}
-            {isMobile &&
-            <div className={styles.joystick}>
-                <Joystick 
-                    size={100} 
-                    baseColor={translucify(colors.joeGrayBlue)} 
-                    stickColor={translucify(colors.joeDarkBlue)} 
-                    disabled={!state.current || state.finished}
-                    throttle={120}
-                    move={(e) => {
-                        const dirs = {
-                            'FORWARD': 'ArrowUp',
-                            'BACKWARD': 'ArrowDown', 
-                            'LEFT': 'ArrowLeft',
-                            'RIGHT': 'ArrowRight'
-                        }
-                        move(R.path([e.direction], dirs), state.maze, state.current, setCurrent)
-                    }} >
-                </Joystick>
-            </div>}
+                grid={state.visible}
+                swipeHandlers={swipeHandlers} />}
             <FinishedModal 
                 isOpen={state.finished}
                 resetMaze={() => setState((s) => 
