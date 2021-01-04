@@ -5,7 +5,7 @@ export const width = window.innerWidth;
 export const height = window.innerHeight;
 
 export const isVertical = height > width;
-export const tileSize = isVertical ? height / 25 : width / 25;
+export const tileSize = isVertical ? height / 25 : height / 18;
 
 export const zeros = (n) => Array(n).fill(0);
 export const counting = (n) => Array.from(Array(n).keys());
