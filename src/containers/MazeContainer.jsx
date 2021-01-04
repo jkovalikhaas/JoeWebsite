@@ -159,7 +159,7 @@ const MazeContainer = () => {
                     baseColor={translucify(colors.joeGrayBlue)} 
                     stickColor={translucify(colors.joeDarkBlue)} 
                     disabled={!state.current || state.finished}
-                    throttle={150}
+                    throttle={120}
                     move={(e) => {
                         const dirs = {
                             'FORWARD': 'ArrowUp',
