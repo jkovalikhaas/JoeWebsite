@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { createUseStyles } from 'react-jss';
 import { useSwipeable } from "react-swipeable";
 import colors from '../globals/colors.js';
-import { R, randInt, tileSize } from '../globals/variables.jsx';
+import { R, randInt, tileSize, makeOdd } from '../globals/variables.jsx';
 import generateGrid, { setValue, isOpen, getNeighbor } from '../js/generateGrid.js';
 import backtracker from '../js/recursiveBacktracker.js';
 import longestPath from '../js/longestPath.js';
@@ -39,8 +39,8 @@ const gridDimensions = (contentRef, mazeHeight, mazeWidth) => {
     const areaWidth = contentRef.current.getBoundingClientRect().width;
     const areaHeight = contentRef.current.getBoundingClientRect().height - navHeight;
 
-    const tileWidth = Math.floor((areaWidth - tileSize * 2) / tileSize);
-    const tileHeight = Math.floor((areaHeight - tileSize * 2) / tileSize);
+    const tileWidth = makeOdd(Math.floor((areaWidth - tileSize * 2) / tileSize));
+    const tileHeight = makeOdd(Math.floor((areaHeight - tileSize * 2) / tileSize));
 
     return { tileWidth: Math.min(mazeWidth, tileWidth), tileHeight: Math.min(mazeHeight, tileHeight) }
 }
