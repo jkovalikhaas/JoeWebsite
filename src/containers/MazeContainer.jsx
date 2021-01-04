@@ -12,6 +12,7 @@ import Button from '../components/Button.jsx';
 import SizeSlider from '../components/SizeSlider.jsx';
 import MazeGrid from '../components/MazeGrid.jsx';
 import FinishedModal from '../components/FinishedModal.jsx';
+import MiniMap from '../components/MiniMap.jsx';
 
 const useStyles = createUseStyles({
     contentArea: {
@@ -109,13 +110,15 @@ const MazeNav = (props) => {
 
     const {
         setSize,
-        resetMaze
+        resetMaze,
+        toggleMini
     } = props;
 
     return (
         <div id={'maze-nav'} className={styles.nav}>
             <SizeSlider setSize={setSize} />
             <Button title={'Start'} action={() => resetMaze()} />
+            <Button title={'MiniMap'} action={() => toggleMini()} />
         </div>
     )
 }
@@ -131,7 +134,8 @@ const MazeContainer = () => {
         maze: [],
         reset: false,
         current: null,
-        finished: false
+        finished: false,
+        showingMini: false
     });
 
     // holds area around/containing maze
@@ -217,12 +221,21 @@ const MazeContainer = () => {
                 )}
                 resetMaze={() => setState((s) => 
                     ({...s, reset: !s.reset})
+                )} 
+                toggleMini={() => setState((s) => 
+                    ({...s, showingMini: !s.showingMini})
                 )} />
-            {state.visible && <MazeGrid 
+            {state.visible && 
+            <MazeGrid 
                 width={state.tileWidth} 
                 height={state.tileHeight} 
                 grid={state.visible}
                 swipeHandlers={swipeHandlers} />}
+            {state.current && state.showingMini &&
+            <MiniMap
+                width={state.width}
+                height={state.height}
+                maze={state.maze} />}
             <FinishedModal 
                 isOpen={state.finished}
                 resetMaze={() => setState((s) => 

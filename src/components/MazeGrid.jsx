@@ -9,7 +9,7 @@ const useStyles = createUseStyles({
     base: {
         margin: '4vh auto 4vh auto',
         borderRadius: '5px',
-    }
+    },
 });
 
 const MazeGrid = (props) => {

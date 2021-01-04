@@ -27,7 +27,8 @@ const Tile = (props) => {
 
     const {
         tile,
-        tileRef
+        tileRef,
+        className = styles.base
     } = props;
 
     const {
@@ -39,7 +40,7 @@ const Tile = (props) => {
     const isOpen = (dir) => R.path([dir, 'open'], neighbors) ? tileColors[value] : colors.joeDarkBlue;
 
     return (
-        <div key={`${x}, ${y}`} className={styles.base} ref={tileRef}
+        <div key={`${x}, ${y}`} className={className} ref={tileRef}
             style={{backgroundColor: tileColors[value],
                     borderTopColor: isOpen('north'), borderBottomColor: isOpen('south'),
                     borderRightColor: isOpen('east'), borderLeftColor: isOpen('west')}}>
