@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { createUseStyles } from 'react-jss';
+import { isMobile } from "react-device-detect";
 import { colors } from '../globals/colors.js';
 import { tileSize } from '../globals/variables.jsx';
 import Modal from '@material-ui/core/Modal';
@@ -18,7 +19,7 @@ const useStyles = createUseStyles({
         textAlign: 'center'
     },
     title: {
-        fontSize: '20px'
+        fontSize: isMobile ? '14px' : '20px'
     },
     button: {
         padding: '5px',

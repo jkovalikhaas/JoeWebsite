@@ -3,9 +3,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { createUseStyles } from 'react-jss';
 import { useSwipeable } from "react-swipeable";
-import { isMobile } from "react-device-detect";
 import colors from '../globals/colors.js';
-import { R, randInt, translucify, tileSize } from '../globals/variables.jsx';
+import { R, randInt, tileSize } from '../globals/variables.jsx';
 import generateGrid, { setValue, isOpen, getNeighbor } from '../js/generateGrid.js';
 import backtracker from '../js/recursiveBacktracker.js';
 import longestPath from '../js/longestPath.js';
@@ -201,11 +200,10 @@ const MazeContainer = () => {
         onSwiping: (e) => {
             const dir = e.dir;
             const dirs = {'Up': 'ArrowUp', 'Down': 'ArrowDown', 'Left': 'ArrowLeft', 'Right': 'ArrowRight'};
-            var first = true;   // only wait after first move
+            // set timeout between moves
             setTimeout(() => {
                 move(R.path([dir], dirs), state.maze, state.current, setCurrent);
-                first = false;
-            }, first ? 100 : 140);
+            }, 120);
         },
         preventDefaultTouchmoveEvent: true,
         trackMouse: true
