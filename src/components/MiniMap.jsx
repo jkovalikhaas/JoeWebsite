@@ -1,6 +1,5 @@
-import React, {useEffect, useState, useRef } from 'react';
+import React from 'react';
 import { createUseStyles } from 'react-jss';
-import colors from '../globals/colors.js';
 import GridList from '@material-ui/core/GridList';
 import Tile from './Tile.jsx';
 
@@ -10,7 +9,8 @@ const useStyles = createUseStyles({
         top: '18vh',
         right: 0,
         opacity: '0.5',
-        borderRadius: '5px'
+        borderRadius: '5px',
+        boxShadow: '0 10px 15px rgba(0, 0, 0, 0.2)',
     },
     tile: {
         width: '4px',
