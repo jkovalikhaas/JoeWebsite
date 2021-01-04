@@ -11,6 +11,7 @@ import backtracker from '../js/recursiveBacktracker.js';
 import longestPath from '../js/longestPath.js';
 import Button from '../components/Button.jsx';
 import MazeGrid from '../components/MazeGrid.jsx';
+import FinishedModal from '../components/FinishedModal.jsx';
 
 const useStyles = createUseStyles({
     contentArea: {
@@ -135,7 +136,6 @@ const MazeContainer = () => {
             current: temp[tile.index]
         }));
         if(tile.value == 'last') {
-            console.log("Yayyyyy");
             setState(s => ({ ...s, finished: true }));
             return;
         }
@@ -170,6 +170,11 @@ const MazeContainer = () => {
                     }} >
                 </Joystick>
             </div>}
+            <FinishedModal 
+                isOpen={state.finished}
+                resetMaze={() => setState((s) => 
+                    ({...s, reset: !s.reset})
+                )} />
         </div>
     );
 };
