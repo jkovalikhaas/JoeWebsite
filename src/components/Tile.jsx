@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from 'react';
+import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { R, tileSize } from '../globals/variables.jsx';
 import colors from '../globals/colors.js';
@@ -27,11 +27,11 @@ const Tile = (props) => {
 
     const {
         tile,
+        tileRef
     } = props;
 
     const {
         x, y,
-        index,
         value,
         neighbors
     } = tile;
@@ -39,7 +39,7 @@ const Tile = (props) => {
     const isOpen = (dir) => R.path([dir, 'open'], neighbors) ? tileColors[value] : colors.joeDarkBlue;
 
     return (
-        <div key={`${x}, ${y}`} className={styles.base}
+        <div key={`${x}, ${y}`} className={styles.base} ref={tileRef}
             style={{backgroundColor: tileColors[value],
                     borderTopColor: isOpen('north'), borderBottomColor: isOpen('south'),
                     borderRightColor: isOpen('east'), borderLeftColor: isOpen('west')}}>

@@ -45,7 +45,7 @@ const Tile = (x, y, index, value = 0) => {
 }
 
 // creates 'backend' grid of tiles to hold full information of grid (not fully visible to user)
-const Grid = (width = 10, height = 10) => {
+const Grid = (width, height) => {
     var grid = counting(width * height).map(index => {
         return (
             Tile(index % width, Math.floor(index / height), index)

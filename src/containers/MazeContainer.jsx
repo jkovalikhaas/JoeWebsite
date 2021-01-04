@@ -16,7 +16,7 @@ const useStyles = createUseStyles({
     contentArea: {
         width: '100vw',
         maxWidth: '100vw',
-        height: '92vh',
+        height: '90vh',
         overflow: 'hidden',
         touchAction: 'none'
     },
@@ -95,7 +95,7 @@ const MazeContainer = () => {
 
     // create maze
     useEffect(() => {
-        var grid = generateGrid();
+        var grid = generateGrid(state.width, state.height);
         // create/set start tile
         const start = grid[randInt(state.width * state.height)];
         grid = setValue(grid, start.index, 'current');
@@ -123,7 +123,6 @@ const MazeContainer = () => {
 
     // set current tile
     const setCurrent = (tile) => {
-        // if(tile.value == 'start') return;
         // update current tile
         const temp = state.maze.map(x => {
             if(x.index == tile.index) return R.assoc('value', 'current', x);
