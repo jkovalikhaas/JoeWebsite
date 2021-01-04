@@ -5,7 +5,7 @@ import { createUseStyles } from 'react-jss';
 import { Joystick } from 'react-joystick-component';
 import { isMobile } from "react-device-detect";
 import colors from '../globals/colors.js';
-import { R, randInt, translucify } from '../globals/variables.jsx';
+import { R, randInt, translucify, tileSize } from '../globals/variables.jsx';
 import generateGrid, { setValue, isOpen, getNeighbor } from '../js/generateGrid.js';
 import backtracker from '../js/recursiveBacktracker.js';
 import longestPath from '../js/longestPath.js';
@@ -35,6 +35,21 @@ const useStyles = createUseStyles({
         bottom: '10vh',
     }
 });
+
+// calculates grid dimensions in tiles
+const gridDimensions = (contentRef, mazeHeight, mazeWidth) => {
+    // make sure contentRef is valid
+    if(!contentRef.current) return { tileWidth: 11, tileHeight: 11 }
+
+    const navHeight = R.path(['current', 'firstChild'], contentRef).getBoundingClientRect().height;
+    const areaWidth = contentRef.current.getBoundingClientRect().width;
+    const areaHeight = contentRef.current.getBoundingClientRect().height - navHeight;
+
+    const tileWidth = Math.floor((areaWidth - tileSize * 2) / tileSize);
+    const tileHeight = Math.floor((areaHeight - tileSize * 2) / tileSize);
+
+    return { tileWidth: Math.min(mazeWidth, tileWidth), tileHeight: Math.min(mazeHeight, tileHeight) }
+}
 
 // movement controller
 const move = (key, maze, current, setCurrent) => {
@@ -69,20 +84,20 @@ const move = (key, maze, current, setCurrent) => {
 }
 
 // returns part of maze that is being shown
-const visibleMaze = (maze, current, width = 11, height = 11) => {
+const visibleMaze = (maze, current, width, height) => {
     const maxX = R.last(maze).x;
     const maxY = R.last(maze).y;
-    const center = Math.floor(width / 2);
-
+    const centerX = Math.floor(width / 2);
+    const centerY = Math.floor(height / 2);
     var startX = 0; var startY = 0;
 
-    if(current.x <= center) startX = 0;
-    else if(current.x >= maxX - center) startX = maxX - width + 1;
-    else startX = current.x - center;
+    if(current.x <= centerX) startX = 0;
+    else if(current.x >= maxX - centerX) startX = maxX - width + 1;
+    else startX = current.x - centerX;
 
-    if(current.y <= center) startY = 0;
-    else if(current.y >= maxY - center) startY = maxY - height + 1;
-    else startY = current.y - center;
+    if(current.y <= centerY) startY = 0;
+    else if(current.y >= maxY - centerY) startY = maxY - height + 1;
+    else startY = current.y - centerY;
 
     const array = [];
     // add all tiles to array that are in visible block
@@ -104,7 +119,7 @@ const MazeNav = (props) => {
     } = props;
 
     return (
-        <div className={styles.nav}>
+        <div id={'maze-nav'} className={styles.nav}>
             <SizeSlider setSize={setSize} />
             <Button title={'Start'} action={() => resetMaze()} />
         </div>
@@ -117,11 +132,16 @@ const MazeContainer = () => {
     const [state, setState] = useState({
         width: 11,
         height: 11,
+        tileWidth: 11,
+        tileHeight: 11,
         maze: [],
         reset: false,
         current: null,
         finished: false
     });
+
+    // holds area around/containing maze
+    const contentRef = useRef(null);
 
     // create maze
     useEffect(() => {
@@ -134,12 +154,16 @@ const MazeContainer = () => {
         // create/set last(finish) tile
         const last = longestPath(grid, state.width, state.height, start);
         grid = setValue(grid, last, 'last');
+        // get dimensions of visible grid
+        const { tileWidth, tileHeight } = gridDimensions(contentRef, state.width, state.height);
         // initial state values
         setState(s => ({
             ...s,
             maze: grid,
             current: grid[start.index],
-            visible: state.current && visibleMaze(state.maze, state.current),
+            tileWidth: tileWidth,
+            tileHeight: tileHeight,
+            visible: state.current && visibleMaze(state.maze, state.current, tileWidth, tileHeight),
             finished: false
         }));
     }, [state.reset]);
@@ -147,7 +171,7 @@ const MazeContainer = () => {
     // update visible maze
     useEffect(() => {
         if(state.current)
-            setState(s => ({...s, visible: visibleMaze(state.maze, state.current)}));
+            setState(s => ({...s, visible: visibleMaze(s.maze, s.current, s.tileWidth, s.tileHeight)}));
     }, [state.current])
 
     // add key effects
@@ -178,7 +202,7 @@ const MazeContainer = () => {
     };
 
     return (
-        <div className={styles.contentArea}>
+        <div className={styles.contentArea} ref={contentRef}>
             <MazeNav
                 setSize={(w, h) => setState((s) => 
                     ({...s, width: w, height: h, reset: !s.reset})
@@ -187,8 +211,8 @@ const MazeContainer = () => {
                     ({...s, reset: !s.reset})
                 )} />
             {state.visible && <MazeGrid 
-                // width={state.width} 
-                // height={state.height} 
+                width={state.tileWidth} 
+                height={state.tileHeight} 
                 grid={state.visible} />}
             {isMobile &&
             <div className={styles.joystick}>

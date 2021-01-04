@@ -1,11 +1,11 @@
 
 export const R = require('ramda');
 
-export const width = window.innerWidth;
-export const height = window.innerHeight;
+export const screenWidth = window.innerWidth;
+export const screenHeight = window.innerHeight;
 
-export const isVertical = height > width;
-export const tileSize = isVertical ? height / 25 : height / 18;
+export const isVertical = screenHeight > screenWidth;
+export const tileSize = isVertical ? screenHeight / 25 : screenHeight / 18;
 
 export const zeros = (n) => Array(n).fill(0);
 export const counting = (n) => Array.from(Array(n).keys());
