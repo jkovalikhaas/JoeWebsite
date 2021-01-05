@@ -15,6 +15,7 @@ import SizeSlider from '../components/SizeSlider.jsx';
 import MazeGrid from '../components/MazeGrid.jsx';
 import FinishedModal from '../components/FinishedModal.jsx';
 import MiniMap from '../components/MiniMap.jsx';
+import { has } from 'ramda';
 
 const useStyles = createUseStyles({
     contentArea: {
@@ -140,7 +141,8 @@ const MazeContainer = () => {
         reset: false,
         current: null,
         finished: false,
-        showingMini: false
+        showingMini: false,
+        hasSolution: false
     });
 
     // holds area around/containing maze
@@ -183,7 +185,36 @@ const MazeContainer = () => {
             if(state.current && !state.finished)
                 move(e.key.toString(), state.maze, state.current, setCurrent);
         };
-    }, [state.current, state.finished]);
+    }, [state.current, state.hasSolution, state.finished]);
+
+    // const set solution path
+    const setSolution = () => {
+        var grid = state.maze;
+        if(state.hasSolution) {
+            // remove solution path 
+            grid = state.maze.map(tile => {
+                if(tile.value == 'solution') 
+                    return R.assoc('value', 'default', tile);
+                return tile;
+            })
+        } else {
+            // add solution path
+            const solution = solutionPath(state.maze);
+            grid = state.maze.map(tile => {
+                if(solution.includes(tile.index) && tile.value != 'current' && tile.value != 'last') {
+                    return R.assoc('value', 'solution', tile);
+                }
+                return tile;
+            })
+        }
+        // update grid/visible grid
+        setState((s) => ({
+            ...s,
+            hasSolution: !s.hasSolution,
+            maze: grid,
+            visible: state.current && visibleMaze(grid, state.current, state.tileWidth, state.tileHeight),
+        }));
+    };
 
     // set current tile
     const setCurrent = (tile) => {
@@ -203,7 +234,7 @@ const MazeContainer = () => {
             return;
         }
     };
-    
+
     // add swipe movement for mobile
     const swipeHandlers = useSwipeable({
         onSwiping: (e) => {
@@ -230,7 +261,7 @@ const MazeContainer = () => {
                 toggleMini={() => setState((s) => 
                     ({...s, showingMini: !s.showingMini})
                 )}
-                toggleSol={() => console.log(solutionPath(state.maze))} />
+                toggleSol={() => setSolution()} />
             {state.visible && 
             <MazeGrid 
                 width={state.tileWidth} 

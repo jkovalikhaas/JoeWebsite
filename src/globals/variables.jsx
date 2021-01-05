@@ -9,6 +9,7 @@ export const tileSize = isVertical ? screenHeight / 25 : screenHeight / 18;
 
 export const zeros = (n) => Array(n).fill(0);
 export const counting = (n) => Array.from(Array(n).keys());
+export const falses = (n) => Array(n).fill(false);
 
 export const randInt = (n) => Math.floor(Math.random() * n);
 export const makeOdd = (n) => n % 2 == 0 ? n - 1 : n;
