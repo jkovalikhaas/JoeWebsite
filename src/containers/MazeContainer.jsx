@@ -141,8 +141,7 @@ const MazeContainer = () => {
         reset: false,
         current: null,
         finished: false,
-        showingMini: false,
-        hasSolution: false
+        showingMini: false
     });
 
     // holds area around/containing maze
@@ -185,12 +184,13 @@ const MazeContainer = () => {
             if(state.current && !state.finished)
                 move(e.key.toString(), state.maze, state.current, setCurrent);
         };
-    }, [state.current, state.hasSolution, state.finished]);
+    }, [state.current, state.visible, state.finished]);
 
     // const set solution path
     const setSolution = () => {
         var grid = state.maze;
-        if(state.hasSolution) {
+        const hasSolution = state.maze.filter(x => x.value == 'solution').length > 0;
+        if(hasSolution) {
             // remove solution path 
             grid = state.maze.map(tile => {
                 if(tile.value == 'solution') 
@@ -210,7 +210,6 @@ const MazeContainer = () => {
         // update grid/visible grid
         setState((s) => ({
             ...s,
-            hasSolution: !s.hasSolution,
             maze: grid,
             visible: state.current && visibleMaze(grid, state.current, state.tileWidth, state.tileHeight),
         }));
