@@ -62,10 +62,10 @@ const SizeSlider = (props) => {
                 step={1}
                 marks
                 min={1}
-                max={4}
+                max={5}
                 onChangeCommitted={(event, value) => {
-                    const size = value * 10 + 1;
-                    setSize(size, size);
+                    const sizes = [11, 17, 23, 29, 35];
+                    setSize(sizes[value - 1], sizes[value - 1]);
                 }}/>
         </div>
     )

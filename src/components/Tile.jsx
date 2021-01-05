@@ -5,8 +5,8 @@ import colors from '../globals/colors.js';
 
 const useStyles = createUseStyles({
     base: {
-        height: tileSize,
-        width: tileSize,
+        height: `${tileSize}px`,
+        width: `${tileSize}px`,
         borderStyle: 'solid',
         borderWidth: '2px',
     }

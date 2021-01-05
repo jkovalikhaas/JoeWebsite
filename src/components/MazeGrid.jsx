@@ -17,7 +17,6 @@ const MazeGrid = (props) => {
 
     const {
         width = 11,
-        height = 11,
         grid,
         swipeHandlers
     } = props;
