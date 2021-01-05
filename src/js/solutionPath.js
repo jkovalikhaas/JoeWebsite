@@ -45,8 +45,7 @@ const solutionPath = (maze) => {
             const cost = manhattan(current.tile, last);
             // add to then sort queue
             queue = R.append(Node(temp, cost, current.level + 1, current), queue);
-            const sortByCost = R.sortBy(R.prop('cost'));
-            queue = sortByCost(queue);
+            queue = R.sortBy(R.prop('cost'))(queue);
         });
     }
 

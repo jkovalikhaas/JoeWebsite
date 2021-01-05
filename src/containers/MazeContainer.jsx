@@ -184,7 +184,7 @@ const MazeContainer = () => {
             if(state.current && !state.finished)
                 move(e.key.toString(), state.maze, state.current, setCurrent);
         };
-    }, [state.current, state.visible, state.finished]);
+    }, [state.maze, state.finished]);
 
     // const set solution path
     const setSolution = () => {
