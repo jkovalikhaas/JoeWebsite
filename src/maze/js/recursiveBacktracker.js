@@ -1,4 +1,4 @@
-import { R, randInt, zeros, oppositeDir } from '../globals/variables';
+import { R, randInt, zeros, oppositeDir } from '../../globals/variables';
 
 // 'opens' path between neighbors 
 const openPath = (grid, index, dir) => {

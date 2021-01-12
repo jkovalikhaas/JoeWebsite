@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 import { isMobile } from "react-device-detect";
 import { colors } from '../globals/colors.js';
@@ -36,7 +36,7 @@ const FinishedModal = (props) => {
 
     const {
         isOpen,
-        resetMaze
+        completeAction
     } = props;
 
     return (
@@ -46,7 +46,7 @@ const FinishedModal = (props) => {
         >
             <>
                 <div className={styles.title}>Congratulations!</div>
-                <div className={styles.button} onClick={() => resetMaze()}>
+                <div className={styles.button} onClick={() => completeAction()}>
                     Play Again
                 </div>
             </>

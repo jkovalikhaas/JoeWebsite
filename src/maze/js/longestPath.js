@@ -1,4 +1,4 @@
-import { R, zeros, oppositeDir } from '../globals/variables';
+import { R, zeros, oppositeDir } from '../../globals/variables';
 
 // calculates index of tile farthest from start
 

@@ -1,7 +1,6 @@
-import React, {useEffect, useState, useRef } from 'react';
+import React from 'react';
 import { createUseStyles } from 'react-jss';
-import colors from '../globals/colors.js';
-import { tileSize, screenSize } from '../globals/variables';
+import { tileSize } from '../../globals/variables';
 import GridList from '@material-ui/core/GridList';
 import Tile from './Tile.jsx';
 

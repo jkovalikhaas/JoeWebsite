@@ -1,6 +1,6 @@
 /* eslint-disable no-loop-func */
 /* eslint-disable eqeqeq */
-import { R, falses, oppositeDir } from '../globals/variables';
+import { R, falses } from '../../globals/variables';
 
 // uses astar to find best path between start and last tile
 

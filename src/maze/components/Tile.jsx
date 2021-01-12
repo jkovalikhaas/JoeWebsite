@@ -1,7 +1,7 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { R, tileSize } from '../globals/variables.jsx';
-import colors from '../globals/colors.js';
+import { R, tileSize } from '../../globals/variables.jsx';
+import colors from '../../globals/colors.js';
 
 const useStyles = createUseStyles({
     base: {

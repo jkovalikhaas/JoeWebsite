@@ -1,4 +1,4 @@
-import { R, counting } from '../globals/variables';
+import { R, counting } from '../../globals/variables';
 
 // sets grid value based on an index
 export const setValue = (grid, index, value) => {

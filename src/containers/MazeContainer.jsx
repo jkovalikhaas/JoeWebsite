@@ -6,16 +6,15 @@ import { useSwipeable } from "react-swipeable";
 import { isMobile } from 'react-device-detect';
 import colors from '../globals/colors.js';
 import { R, randInt, tileSize, makeOdd } from '../globals/variables.jsx';
-import generateGrid, { setValue, isOpen, getNeighbor } from '../js/generateGrid.js';
-import backtracker from '../js/recursiveBacktracker.js';
-import longestPath from '../js/longestPath.js';
-import solutionPath from '../js/solutionPath.js';
-import Button from '../components/Button.jsx';
-import SizeSlider from '../components/SizeSlider.jsx';
-import MazeGrid from '../components/MazeGrid.jsx';
 import FinishedModal from '../components/FinishedModal.jsx';
-import MiniMap from '../components/MiniMap.jsx';
-import { has } from 'ramda';
+import generateGrid, { setValue, isOpen, getNeighbor } from '../maze/js/generateGrid.js';
+import backtracker from '../maze/js/recursiveBacktracker.js';
+import longestPath from '../maze/js/longestPath.js';
+import solutionPath from '../maze/js/solutionPath.js';
+import Button from '../components/Button.jsx';
+import SizeSlider from '../maze/components/SizeSlider.jsx';
+import MazeGrid from '../maze/components/MazeGrid.jsx';
+import MiniMap from '../maze/components/MiniMap.jsx';
 
 const useStyles = createUseStyles({
     contentArea: {
@@ -274,7 +273,7 @@ const MazeContainer = () => {
                 maze={state.maze} />}
             <FinishedModal 
                 isOpen={state.finished}
-                resetMaze={() => setState((s) => 
+                completeAction={() => setState((s) => 
                     ({...s, reset: !s.reset})
                 )} />
         </div>

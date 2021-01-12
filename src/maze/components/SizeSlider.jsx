@@ -1,7 +1,7 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import colors from '../globals/colors.js';
-import { tileSize } from '../globals/variables.jsx';
+import colors from '../../globals/colors.js';
+import { tileSize } from '../../globals/variables.jsx';
 import { isMobile } from "react-device-detect";
 import Slider from '@material-ui/core/Slider';
 
