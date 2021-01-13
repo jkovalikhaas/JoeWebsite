@@ -1,5 +1,7 @@
-import React, {useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
+import { R } from '../globals/variables.jsx';
+import { fetchWords } from '../globals/fetchAPI.js';
 
 const useStyles = createUseStyles({
     contentArea: {
@@ -10,8 +12,36 @@ const useStyles = createUseStyles({
     },
 });
 
+const GetWords = () => {
+    const [state, setState] = useState({});
+
+    useEffect(() => {
+        Promise.all([fetchWords()]).then((src) => {
+            setState((s) => ({ ...s, words: src[0].map(x => {
+                    return {
+                        word: x.word,
+                        category: x.category,
+                        subCategory: x.category
+                    }
+                }) 
+            }));
+        }, []);
+    }, []);
+
+    return state;
+}
+
 const WordsearchContainer = () => {
     const styles = useStyles();
+
+    const [state, setState] = useState({
+
+    });
+
+    const { words } = GetWords();
+
+    const animals = words && words.filter(R.propEq('category', 'animal'));
+    console.log(animals)
 
     return (
         <div className={styles.contentArea}>
