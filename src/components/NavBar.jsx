@@ -2,6 +2,7 @@ import React from 'react';
 import '../index.css';
 import { createUseStyles } from 'react-jss';
 import colors from '../globals/colors.js';
+import { isVertical } from '../globals/variables.jsx';
 import { R } from '../globals/variables.jsx';
 
 const useStyles = createUseStyles({
@@ -19,9 +20,15 @@ const useStyles = createUseStyles({
         textDecoration: 'none'
     },
     homeButton: {
+        position: 'absolute',
         color: colors.joeWhite,
         margin: '2.5vh 1vh 0 10px',
-        textDecoration: 'none'
+        padding: '2px 4px',
+        textDecoration: 'none',
+        backgroundColor: colors.joeDarkGrayBlue,
+        borderRadius: '5px',
+        fontSize: isVertical ? '12px' : '16px',
+        height: isVertical ? '18px' : '22px',
     }
 });
 

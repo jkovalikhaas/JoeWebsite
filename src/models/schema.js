@@ -23,13 +23,6 @@ export const schema = {
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
-                },
-                "subCategory": {
-                    "name": "subCategory",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -60,5 +53,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "47caa16b0677cb36ee64a63ac448eca9"
+    "version": "cc9c7901f3d2d6aa7479e3f46648dc4d"
 };
