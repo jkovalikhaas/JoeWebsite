@@ -15,7 +15,7 @@ const useStyles = createUseStyles({
         color: colors.joeWhite,
         fontSize: isVertical ? '12px' : '16x',
         maxHeight: isVertical ? '20px' : '24px',
-        width: isVertical ? '33%' : '15vh'
+        maxWidth: isVertical ? '30%' : '15vh'
     }
 });
 
@@ -41,7 +41,6 @@ const WordList = (props) => {
             </GridList>
         </div>
     )
-    
 }
 
 export default WordList;

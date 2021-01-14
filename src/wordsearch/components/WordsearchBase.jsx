@@ -26,14 +26,13 @@ const WordsearchBase = (props) => {
 
     const [state, setState] = useState({
         letters: Grid(list, size),
-        temp: false
     });
 
     const baseRef = useRef(null);
 
     useEffect(() => {
-        setState((s) => ({...s, temp: !s.temp}));
-    }, []);
+        setState((s) => ({...s, letters: Grid(list, size)}));
+    }, [list]);
 
     const tileSize = baseRef.current && R.path(['current', 'clientWidth'], baseRef) / size;
 

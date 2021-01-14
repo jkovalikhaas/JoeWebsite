@@ -67,7 +67,7 @@ const WordsearchNav = (props) => {
 
     return (
         <div id={'wordsearch-nav'} className={styles.nav}>
-            <Button title={'Start'} action={() => console.log('start')} />
+            <Button title={'Start'} action={() => resetSearch()} />
         </div>
     )
 }
@@ -77,27 +77,38 @@ const WordsearchContainer = () => {
 
     const [state, setState] = useState({
         category: 'animal',
-        size: 20,
-        reset: false
+        words: null,
+        size: 10,
+        reset: false,
+        finished: false
     });
 
     // full list of words
     const { words } = GetWords();
-    // list of words filtered by selected category
-    const list = words && (state.category == 'all' ? words :
-        words.filter(x => x.categories.includes(state.category)));
-    // list of words (length = size)
-    const usableList = list && getUsedWords(state.size, list);
+
+    useEffect(() => {
+        // list of words filtered by selected category
+        const list = words && (state.category == 'all' ? words :
+            words.filter(x => x.categories.includes(state.category)));
+        // list of words (length = size)
+        setState((s) => ({
+            ...s, 
+            words: list && getUsedWords(state.size, list)
+        }))
+    }, [words, state.reset]);
 
     return (
         <div className={styles.contentArea}>
-            <WordsearchNav />
-            {usableList && 
+            <WordsearchNav 
+                resetSearch={() => setState((s) => 
+                    ({...s, reset: !s.reset})
+                )}  />
+            {state.words && 
             <div style={{display: 'flex', flexDirection: isVertical ? 'column' : 'row'}}>
             <WordsearchBase 
-                list={usableList} 
+                list={state.words} 
                 size={state.size} />
-            <WordList list={usableList} />
+            <WordList list={state.words} />
             </div>}
         </div>
     )

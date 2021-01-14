@@ -16,7 +16,9 @@ const useStyles = createUseStyles({
 const tileColors = {
     default: colors.joeLightBlue,
     0: colors.joeLightBlue,
-    1: colors.joePurple,
+    1: colors.joeLightBlue,
+    selected: colors.joePurple,
+    found: colors.joeGreen
 }
 
 const LetterTile = (props) => {
