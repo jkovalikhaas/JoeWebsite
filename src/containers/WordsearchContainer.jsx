@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
-import { isVertical, R } from '../globals/variables.jsx';
+import { isVertical, R, shuffle } from '../globals/variables.jsx';
 import colors from '../globals/colors.js';
 import { fetchWords } from '../globals/fetchAPI.js';
 import Button from '../components/Button.jsx';
@@ -33,8 +33,7 @@ const GetWords = () => {
                     return {
                         label: x.word,
                         word: x.word.toLowerCase().split(" ").join(""),
-                        category: x.category,
-                        subCategory: x.category,
+                        categories: x.category.split(','),
                         found: false
                     }
                 }) 
@@ -48,11 +47,13 @@ const GetWords = () => {
 // gets list of words for search
 const getUsedWords = (size, list) => {
     const array = [];
+    const words = shuffle(R.clone(list));
     while(array.length < size) {
-        const elem = list[Math.floor(Math.random() * list.length)];
+        const elem = words.pop();
         const { word } = elem;
         if(word.length > size || array.includes(elem)) continue;
         array.push(elem);
+        if(R.isEmpty(words)) break; // break if no more words
     }
     return array;
 }
@@ -76,14 +77,16 @@ const WordsearchContainer = () => {
 
     const [state, setState] = useState({
         category: 'animal',
-        size: 10
+        size: 20,
+        reset: false
     });
 
+    // full list of words
     const { words } = GetWords();
-    
+    // list of words filtered by selected category
     const list = words && (state.category == 'all' ? words :
-        words.filter(R.propEq('category', state.category)));
-
+        words.filter(x => x.categories.includes(state.category)));
+    // list of words (length = size)
     const usableList = list && getUsedWords(state.size, list);
 
     return (

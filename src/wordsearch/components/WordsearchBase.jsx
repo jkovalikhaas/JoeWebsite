@@ -3,7 +3,7 @@ import { createUseStyles } from 'react-jss';
 import { R, isVertical } from '../../globals/variables.jsx';
 import colors from '../../globals/colors.js';
 import GridList from '@material-ui/core/GridList';
-import Letters from '../js/generateLetters.js';
+import Grid from "../js/generateGrid.js";
 import LetterTile from './LetterTile.jsx';
 
 const useStyles = createUseStyles({
@@ -13,7 +13,6 @@ const useStyles = createUseStyles({
         maxWidth: isVertical ? '80vw' : '70vh',
         minWidth: isVertical ? '80vw' : '70vh',
         maxHeight: isVertical ? '80vw' : '70vh',
-        backgroundColor: colors.joeLightBlue,
     },
 });
 
@@ -26,7 +25,7 @@ const WordsearchBase = (props) => {
     } = props;
 
     const [state, setState] = useState({
-        letters: Letters(size),
+        letters: Grid(list, size),
         temp: false
     });
 
@@ -44,7 +43,7 @@ const WordsearchBase = (props) => {
             <GridList cols={size}>
                 {state.letters.map((letter, idx) => {
                     return <LetterTile 
-                                value={letter} 
+                                tile={letter} 
                                 size={tileSize}
                                 key={letter + idx}/>
                 })}
