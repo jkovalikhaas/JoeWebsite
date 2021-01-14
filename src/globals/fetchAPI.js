@@ -6,5 +6,6 @@ import awsExports from "../aws-exports.js";
 Amplify.configure(awsExports);
 
 export const fetchWords = async () => {
+    console.log('hello there');
     return await DataStore.query(Words);
 }
