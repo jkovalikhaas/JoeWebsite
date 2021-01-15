@@ -85,10 +85,10 @@ const WordsearchContainer = () => {
 
     // full list of words
     const { words } = GetWords();
-
+    console.log(words);
     useEffect(() => {
         // list of words filtered by selected category
-        const list = words && (state.category == 'all' ? words :
+        const list = words && !R.isEmpty(words) && (state.category == 'all' ? words :
             words.filter(x => x.categories.includes(state.category)));
         // list of words (length = size)
         setState((s) => ({
