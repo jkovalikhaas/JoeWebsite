@@ -18,6 +18,7 @@ const tileColors = {
     0: colors.joeLightBlue,
     1: colors.joeLightBlue,
     selected: colors.joePurple,
+    tempSelected: colors.joePurple,
     found: colors.joeGreen
 }
 

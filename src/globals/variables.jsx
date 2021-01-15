@@ -21,6 +21,11 @@ export const translucify = (color) => {
     return color + '80';
 }
 
+// converts array to string without commas
+export const stringifyArray = (array) => {
+    return array.toString().replace(/,/g, '');
+}
+
 // gets opposite direction
 export const oppositeDir = (dir) => {
     if(dir === 'north') return 'south';

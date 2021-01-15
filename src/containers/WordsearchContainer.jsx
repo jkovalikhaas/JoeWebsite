@@ -111,7 +111,11 @@ const WordsearchContainer = () => {
             <div style={{display: 'flex', flexDirection: isVertical ? 'column' : 'row'}}>
             <WordsearchBase 
                 list={state.words} 
-                size={state.size} />
+                size={state.size}
+                reset={state.reset}
+                foundWord={(index) => setState((s) =>
+                    ({...s, words: R.assocPath([index, 'found'], true, s.words)})
+                )} />
             <WordList list={state.words} />
             </div>}
         </div>

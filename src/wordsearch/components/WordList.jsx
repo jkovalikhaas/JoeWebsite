@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { createUseStyles } from 'react-jss';
-import { isVertical } from '../../globals/variables.jsx';
+import { R, isVertical } from '../../globals/variables.jsx';
 import colors from '../../globals/colors.js';
 import GridList from '@material-ui/core/GridList';
 
@@ -32,8 +32,8 @@ const WordList = (props) => {
                 {list.map((word, idx) => {
                     const { label, found } = word;
                     return (
-                        <div className={styles.word} key={word + idx}
-                             textDecoration={found ? 'lineThrough' : 'none'}>
+                        <div className={styles.word} key={word + idx} 
+                             style={{textDecoration: found ? 'line-through' : 'none'}}>
                             {idx + 1}. {label}
                         </div>
                     )

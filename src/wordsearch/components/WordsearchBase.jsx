@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { createUseStyles } from 'react-jss';
-import { R, isVertical } from '../../globals/variables.jsx';
+import { R, isVertical, stringifyArray } from '../../globals/variables.jsx';
 import colors from '../../globals/colors.js';
 import GridList from '@material-ui/core/GridList';
 import Grid from "../js/generateGrid.js";
@@ -23,20 +23,41 @@ const WordsearchBase = (props) => {
 
     const {
         size,
-        list
+        list,
+        reset,
+        foundWord
     } = props;
 
     const [state, setState] = useState({
         letters: Grid(list, size),
-        mouseStart: false,
-        selected: []
+        mouseStart: null,
+        selected: [],
+        isFound: false
     });
 
     const baseRef = useRef(null);
 
     useEffect(() => {
         setState((s) => ({...s, letters: Grid(list, size)}));
-    }, [list]);
+    }, [reset]);
+
+    useEffect(() => {
+        if (state.isFound) {
+            const temp = stringifyArray(state.selected.map(x => state.letters[x].letter));
+            const words = list.map(R.prop('word'));
+            const found = words.includes(temp);
+
+            if (found) foundWord(words.indexOf(temp));
+        }
+        setState((s) => ({
+            ...s,
+            letters: s.letters.map(x => ({
+                ...x,
+                value: s.selected.includes(x.index) ? x.value === 'found' ?
+                    'tempSelected' : 'selected' : x.value === 'tempSelected' ? 'found' : 0
+            }))
+        }));
+    }, [state.selected, state.isFound]);
 
     const tileSize = baseRef.current && R.path(['current', 'clientWidth'], baseRef) / size;
 
@@ -90,12 +111,19 @@ const WordsearchBase = (props) => {
              onMouseDown={(e) => setState((s) => 
                     ({...s, mouseStart: e})
                 )} 
+             onTouchStart={(e) => setState((s) => 
+                    ({...s, mouseStart: e.changedTouches[0]})
+                )}
              onMouseUp={() => setState((s) => 
-                    ({...s, mouseStart: null})
+                    ({...s, mouseStart: null, isFound: true})
+                )}
+             onTouchEnd={() => setState((s) => 
+                    ({...s, mouseStart: null, isFound: true})
                 )}
              onMouseMove={(e) => state.mouseStart && handleClick(e)}
+             onTouchMove={(e) => state.mouseStart && handleClick(e.changedTouches[0])}
              onMouseLeave={() => setState((s) => 
-                    ({...s, mouseStart: null})
+                    ({...s, mouseStart: null, isFound: false, selected: []})
                 )}>
             {tileSize && 
             <GridList cols={size}>
