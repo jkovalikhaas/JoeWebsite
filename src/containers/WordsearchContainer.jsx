@@ -11,8 +11,9 @@ const useStyles = createUseStyles({
     contentArea: {
         width: '100vw',
         maxWidth: '100vw',
-        height: '100vh - 60px',
+        height: '92vh',
         overflow: 'hidden',
+        touchAction: 'none'
     },
     nav: {
         height: '6vh',
