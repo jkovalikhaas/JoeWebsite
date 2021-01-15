@@ -65,6 +65,9 @@ const WordsearchBase = (props) => {
 
     const tileSize = baseRef.current && R.path(['current', 'clientWidth'], baseRef) / size;
 
+    // removes scroll durring touch move
+    document.addEventListener('touchmove', e => e.preventDefault(), {passive: false})
+
     // draws line and highlights tiles in that line
     const handleClick = (e) => {
         const { x, y } = baseRef.current.getBoundingClientRect();   // get offset of grid
