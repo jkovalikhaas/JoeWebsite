@@ -3,4 +3,3 @@ type Words @model @auth(rules: [{allow: public}]) {
   word: String
   category: String
 }
- 
