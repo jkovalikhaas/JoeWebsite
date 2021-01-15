@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
-import { isVertical, R, shuffle } from '../globals/variables.jsx';
+import { R, isVertical, shuffle } from '../globals/variables.jsx';
 import colors from '../globals/colors.js';
 import { fetchWords } from '../globals/fetchAPI.js';
 import Button from '../components/Button.jsx';
@@ -46,8 +46,11 @@ const GetWords = () => {
 
 // gets list of words for search
 const getUsedWords = (size, list) => {
+    if(R.isEmpty(list)) return null;
+
     const array = [];
     const words = shuffle(R.clone(list));
+
     while(array.length < size) {
         const elem = words.pop();
         const { word } = elem;
@@ -55,6 +58,7 @@ const getUsedWords = (size, list) => {
         array.push(elem);
         if(R.isEmpty(words)) break; // break if no more words
     }
+
     return array;
 }
 
@@ -85,10 +89,10 @@ const WordsearchContainer = () => {
 
     // full list of words
     const { words } = GetWords();
-    console.log(words);
+
     useEffect(() => {
         // list of words filtered by selected category
-        const list = words && !R.isEmpty(words) && (state.category == 'all' ? words :
+        const list = words && (state.category === 'all' ? words :
             words.filter(x => x.categories.includes(state.category)));
         // list of words (length = size)
         setState((s) => ({
@@ -96,7 +100,7 @@ const WordsearchContainer = () => {
             words: list && getUsedWords(state.size, list)
         }))
     }, [words, state.reset]);
-
+ 
     return (
         <div className={styles.contentArea}>
             <WordsearchNav 

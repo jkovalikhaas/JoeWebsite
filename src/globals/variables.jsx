@@ -14,7 +14,7 @@ export const falses = (n) => Array(n).fill(false);
 export const strings = (n) => Array(n).fill("");
 
 export const randInt = (n) => Math.floor(Math.random() * n);
-export const makeOdd = (n) => n % 2 == 0 ? n - 1 : n;
+export const makeOdd = (n) => n % 2 === 0 ? n - 1 : n;
 
 // makes a color transulcent
 export const translucify = (color) => {

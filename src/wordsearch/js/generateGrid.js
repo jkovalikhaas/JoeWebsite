@@ -23,7 +23,7 @@ const placeWord = (grid, word, start, dir, size) => {
     const dirStr = R.head(Object.keys(dir));
     const x = start % size;
     const y = Math.floor(start / size);
-    
+
     // check for edge overflow
     if(dirStr.toLowerCase().includes('up') && y < word.length) return null;
     if(dirStr.toLowerCase().includes('down') && y > size - word.length) return null;
@@ -42,13 +42,13 @@ const placeWord = (grid, word, start, dir, size) => {
 }
 
 // generate letter objects for each index
-const getLetters = (grid) => {
+const getLetters = (grid, size) => {
     return grid.map((x, i) => {
         const isPlaced = !R.equals(x, "");
         return {
             letter: isPlaced ? x : getRandomLetter(),
-            index: i,
             value: isPlaced ? 1 : 0,
+            index: i,
         }
     })
 }
@@ -92,7 +92,7 @@ const Grid = (list, size) => {
         }
     }
 
-    return getLetters(R.isNil(finalGrid) ? strings(size * size) : finalGrid);
+    return getLetters(R.isNil(finalGrid) ? strings(size * size) : finalGrid, size);
 }
 
 export default Grid;

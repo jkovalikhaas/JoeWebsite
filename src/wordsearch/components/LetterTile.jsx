@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { createUseStyles } from 'react-jss';
 import { isVertical } from '../../globals/variables.jsx';
 import colors from '../../globals/colors.js';
@@ -32,7 +32,7 @@ const LetterTile = (props) => {
     const { letter, value } = tile;
 
     return (
-        <div className={styles.base} 
+        <div className={styles.base}
              style={{minWidth: size, minHeight: size, maxWidth: size, maxHeight: size, 
                      fontSize: size / 3, paddingTop: size / 4, backgroundColor: tileColors[value]}}>
            {letter.toUpperCase()}
