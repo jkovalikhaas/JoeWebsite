@@ -66,7 +66,7 @@ const WordsearchBase = (props) => {
     const tileSize = baseRef.current && R.path(['current', 'clientWidth'], baseRef) / size;
 
     // removes scroll durring touch move
-    document.addEventListener('touchmove', e => e.preventDefault(), {passive: false})
+    if(baseRef.current) baseRef.current.addEventListener('touchmove', e => e.preventDefault(), {passive: false})
 
     // draws line and highlights tiles in that line
     const handleClick = (e) => {

@@ -146,6 +146,9 @@ const MazeContainer = () => {
     // holds area around/containing maze
     const contentRef = useRef(null);
 
+    // removes scroll durring touch move
+    if(contentRef.current) contentRef.current.addEventListener('touchmove', e => e.preventDefault(), {passive: false})
+
     // create maze
     useEffect(() => {
         var grid = generateGrid(state.width, state.height);
