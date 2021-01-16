@@ -44,24 +44,36 @@ const WordsearchBase = (props) => {
     }, [reset]);
 
     useEffect(() => {
-        // ensure selected values are valid
-        if(Math.min(...state.selected) < 0) return;
-        if (state.isFound) {
-            const temp = stringifyArray(state.selected.map(x => state.letters[x].letter));
-            const words = list.map(R.prop('word'));
-            const found = words.includes(temp);
+        const letters = stringifyArray(state.selected.map(x => state.letters[x].letter));
+        const words = list.map(R.prop('word'));
+        const found = words.includes(letters);
+        const temp = [...state.selected];
 
-            if (found) foundWord(words.indexOf(temp));
-        }
+        if (found) foundWord(words.indexOf(letters));
+
         setState((s) => ({
             ...s,
             letters: s.letters.map(x => ({
                 ...x,
-                value: s.selected.includes(x.index) ? x.value === 'found' ?
-                    'tempSelected' : 'selected' : x.value === 'tempSelected' ? 'found' : 0
+                value: temp.includes(x.index) && found ? 'found' : x.value
+            })),
+            selected: []
+        }));
+    }, [state.isFound]);
+
+    useEffect(() => {
+        // ensure selected values are valid
+        if(Math.min(...state.selected) < 0) return;
+
+        setState((s) => ({
+            ...s,
+            letters: s.letters.map(x => ({
+                ...x,
+                value: s.selected.includes(x.index) ? x.value === 'found' || x.value === 'tempSelected' ?
+                    'tempSelected' : 'selected' : x.value === 'tempSelected' || x.value === 'found' ? 'found' : 0
             }))
         }));
-    }, [state.selected, state.isFound]);
+    }, [state.selected]);
 
     const tileSize = baseRef.current && R.path(['current', 'clientWidth'], baseRef) / size;
 
@@ -122,15 +134,15 @@ const WordsearchBase = (props) => {
                     ({...s, mouseStart: e.changedTouches[0]})
                 )}
              onMouseUp={() => setState((s) => 
-                    ({...s, mouseStart: null, isFound: true})
+                    ({...s, mouseStart: null, isFound: !s.isFound})
                 )}
              onTouchEnd={() => setState((s) => 
-                    ({...s, mouseStart: null, isFound: true})
+                    ({...s, mouseStart: null, isFound: !s.isFound})
                 )}
              onMouseMove={(e) => state.mouseStart && handleClick(e)}
              onTouchMove={(e) => state.mouseStart && handleClick(e.changedTouches[0])}
              onMouseLeave={() => setState((s) => 
-                    ({...s, mouseStart: null, isFound: false, selected: []})
+                    ({...s, mouseStart: null, isFound: !s.isFound})
                 )}>
             {tileSize && 
             <GridList cols={size}>

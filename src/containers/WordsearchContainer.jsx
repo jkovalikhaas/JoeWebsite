@@ -4,6 +4,7 @@ import { R, isVertical, shuffle } from '../globals/variables.jsx';
 import colors from '../globals/colors.js';
 import { fetchWords } from '../globals/fetchAPI.js';
 import Button from '../components/Button.jsx';
+import FinishedModal from '../components/FinishedModal.jsx';
 import WordsearchBase from '../wordsearch/components/WordsearchBase.jsx';
 import WordList from '../wordsearch/components/WordList.jsx';
 
@@ -98,9 +99,19 @@ const WordsearchContainer = () => {
         // list of words (length = size)
         setState((s) => ({
             ...s, 
+            finished: false,
             words: list && getUsedWords(state.size, list)
         }))
     }, [words, state.reset]);
+
+    // check if completed
+    useEffect(() => {
+        if(state.words && R.isEmpty(state.words.filter(R.propEq('found', false))))
+            setState((s) => ({
+                ...s, 
+                finished: true,
+            }))
+    }, [state.words]);
  
     return (
         <div className={styles.contentArea}>
@@ -119,6 +130,11 @@ const WordsearchContainer = () => {
                 )} />
             <WordList list={state.words} />
             </div>}
+            <FinishedModal 
+                isOpen={state.finished}
+                completeAction={() => setState((s) => 
+                    ({...s, reset: !s.reset})
+                )} />
         </div>
     )
 }
