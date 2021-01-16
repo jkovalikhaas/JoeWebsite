@@ -7,15 +7,15 @@ import GridList from '@material-ui/core/GridList';
 const useStyles = createUseStyles({
     base: {
         margin: isVertical ? '4vh auto 4vh auto' : '4vh 0 4vh 4vw',
-        maxWidth: isVertical ? '80vw' : '30vh',
-        minWidth: isVertical ? '80vw' : '30vh',
+        maxWidth: isVertical ? '80vw' : '32vw',
+        minWidth: isVertical ? '80vw' : '32vw',
         maxHeight: isVertical ? '80vw' : '30vh',
     },
     word: {
         color: colors.joeWhite,
         fontSize: isVertical ? '12px' : '16x',
         maxHeight: isVertical ? '20px' : '24px',
-        maxWidth: isVertical ? '30%' : '15vh'
+        maxWidth: isVertical ? '30%' : '15vw'
     }
 });
 

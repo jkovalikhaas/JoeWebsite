@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import { R, isVertical, shuffle } from '../globals/variables.jsx';
 import colors from '../globals/colors.js';
-import { fetchWords } from '../globals/fetchAPI.js';
+import { fetchWords, saveWord } from '../globals/fetchAPI.js';
 import Button from '../components/Button.jsx';
 import FinishedModal from '../components/FinishedModal.jsx';
 import WordsearchBase from '../wordsearch/components/WordsearchBase.jsx';
@@ -64,6 +64,10 @@ const getUsedWords = (size, list) => {
     return array;
 }
 
+const saveWords = [
+    // {word: 'Sloth', category: 'animal,mammal'},
+]
+
 const WordsearchNav = (props) => {
     const styles = useStyles();
 
@@ -74,6 +78,7 @@ const WordsearchNav = (props) => {
     return (
         <div id={'wordsearch-nav'} className={styles.nav}>
             <Button title={'Start'} action={() => resetSearch()} />
+            {/* <Button title={'Save'} action={() => saveWords.forEach(x => saveWord(x.word, x.category))} /> */}
         </div>
     )
 }

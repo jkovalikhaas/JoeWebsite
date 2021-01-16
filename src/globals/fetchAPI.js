@@ -8,3 +8,12 @@ Amplify.configure(awsExports);
 export const fetchWords = async () => {
     return await DataStore.query(Words);
 }
+
+export const saveWord = async (word, category) => {
+    await DataStore.save(
+    new Words({
+		"word": word,
+		"category": category
+    }));
+    console.log(`Sucessfully saved ${word}`);
+}
