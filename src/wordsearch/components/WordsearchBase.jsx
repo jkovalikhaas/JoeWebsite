@@ -46,10 +46,14 @@ const WordsearchBase = (props) => {
     useEffect(() => {
         const letters = stringifyArray(state.selected.map(x => state.letters[x].letter));
         const words = list.map(R.prop('word'));
-        const found = words.includes(letters);
+        const found = words.includes(letters) || words.includes(R.reverse(letters));
         const temp = [...state.selected];
 
-        if (found) foundWord(words.indexOf(letters));
+        if (found) {
+            // checks for reverse words
+            foundWord(words.indexOf(letters));
+            foundWord(words.indexOf(R.reverse(letters)));
+        }
 
         setState((s) => ({
             ...s,

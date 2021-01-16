@@ -9,6 +9,7 @@ import ftp from '../assets/images/ftp-icon.jpg';
 import gitW from '../assets/images/github-icon-white.png';
 import linked from '../assets/images/linkedn-logo.png';
 import maze from '../assets/images/maze.png';
+import wordsearch from '../assets/images/wordsearch.png';
 
 const linkList = [
     {
@@ -30,6 +31,12 @@ const linkList = [
         name: "Maze",
         link: "/maze",
         icon: maze,
+        stay: true
+    },
+    {
+        name: "Wordsearch",
+        link: "/wordsearch",
+        icon: wordsearch,
         stay: true
     }
 ];
