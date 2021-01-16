@@ -27,6 +27,7 @@ const WordsearchBase = (props) => {
         size,
         list,
         reset,
+        resetSearch,
         foundWord
     } = props;
 
@@ -40,12 +41,15 @@ const WordsearchBase = (props) => {
     const baseRef = useRef(null);
 
     useEffect(() => {
-        setState((s) => ({...s, letters: Grid(list, size)}));
+        const grid = Grid(list, size);
+        if(R.isNil(grid))
+            resetSearch();
+        else
+            setState((s) => ({...s, letters: grid}));
     }, [reset]);
 
     useEffect(() => {
         // ensure selected values are in bounds
-        console.log(state.selected)
         if(Math.min(...state.selected) < 0 || Math.max(...state.selected) > size * size) {
             setState((s) => ({...s, selected: []}));
             return; 

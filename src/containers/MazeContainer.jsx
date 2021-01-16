@@ -12,7 +12,7 @@ import backtracker from '../maze/js/recursiveBacktracker.js';
 import longestPath from '../maze/js/longestPath.js';
 import solutionPath from '../maze/js/solutionPath.js';
 import Button from '../components/Button.jsx';
-import SizeSlider from '../maze/components/SizeSlider.jsx';
+import SizeSlider from '../components/SizeSlider.jsx';
 import MazeGrid from '../maze/components/MazeGrid.jsx';
 import MiniMap from '../maze/components/MiniMap.jsx';
 
@@ -120,7 +120,7 @@ const MazeNav = (props) => {
 
     return (
         <div id={'maze-nav'} className={styles.nav}>
-            <SizeSlider setSize={setSize} />
+            <SizeSlider setSize={setSize} sizes={[11, 15, 19, 23, 27]}/>
             <Button title={'Start'} action={() => resetMaze()} />
             <Button title={'MiniMap'} action={() => toggleMini()} />
             <Button title={'Solution'} action={() => toggleSol()} />

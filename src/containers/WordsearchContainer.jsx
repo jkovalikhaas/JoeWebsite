@@ -4,6 +4,7 @@ import { R, isVertical, shuffle } from '../globals/variables.jsx';
 import colors from '../globals/colors.js';
 import { fetchWords, saveWord } from '../globals/fetchAPI.js';
 import Button from '../components/Button.jsx';
+import SizeSlider from '../components/SizeSlider.jsx';
 import FinishedModal from '../components/FinishedModal.jsx';
 import WordsearchBase from '../wordsearch/components/WordsearchBase.jsx';
 import WordList from '../wordsearch/components/WordList.jsx';
@@ -72,11 +73,13 @@ const WordsearchNav = (props) => {
     const styles = useStyles();
 
     const {
+        setSize,
         resetSearch
     } = props;
 
     return (
         <div id={'wordsearch-nav'} className={styles.nav}>
+             <SizeSlider setSize={setSize} sizes={[10, 12, 14, 16, 18]}/>
             <Button title={'Start'} action={() => resetSearch()} />
             {/* <Button title={'Save'} action={() => saveWords.forEach(x => saveWord(x.word, x.category))} /> */}
         </div>
@@ -120,7 +123,10 @@ const WordsearchContainer = () => {
  
     return (
         <div className={styles.contentArea}>
-            <WordsearchNav 
+            <WordsearchNav
+                setSize={(size) => setState((s) =>
+                    ({...s, size: size, reset: !s.reset})
+                )}
                 resetSearch={() => setState((s) => 
                     ({...s, reset: !s.reset})
                 )}  />
@@ -130,6 +136,9 @@ const WordsearchContainer = () => {
                 list={state.words} 
                 size={state.size}
                 reset={state.reset}
+                resetSearch={() => setState((s) => 
+                    ({...s, reset: !s.reset})
+                )}
                 foundWord={(index) => setState((s) =>
                     ({...s, words: R.assocPath([index, 'found'], true, s.words)})
                 )} />

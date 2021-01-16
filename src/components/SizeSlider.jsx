@@ -1,10 +1,9 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import colors from '../../globals/colors.js';
-import { tileSize } from '../../globals/variables.jsx';
+import colors from '../globals/colors.js';
+import { tileSize } from '../globals/variables.jsx';
 import { isMobile } from "react-device-detect";
 import Slider from '@material-ui/core/Slider';
-
 
 const useStyles = createUseStyles({
     base: {
@@ -42,7 +41,8 @@ const SizeSlider = (props) => {
     const styles = useStyles();
 
     const {
-        setSize
+        setSize,
+        sizes
     } = props;
 
     return (
@@ -62,9 +62,8 @@ const SizeSlider = (props) => {
                 step={1}
                 marks
                 min={1}
-                max={5}
+                max={sizes.length}
                 onChangeCommitted={(event, value) => {
-                    const sizes = [11, 17, 23, 29, 35];
                     setSize(sizes[value - 1], sizes[value - 1]);
                 }}/>
         </div>
