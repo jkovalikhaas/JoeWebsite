@@ -21,18 +21,18 @@ const neighbor = (value) => {
 }
 
 // conects each tile to its neighbors in the grid
-const addNeighbors = (grid, width, height) => {
+const addNeighbors = (grid, size) => {
     return grid.map(tile => {
         const {x, y, index } = tile;
         var neighbors = {
             north: null, south: null, east: null, west: null
         };
         // set north
-        if(y !== 0) neighbors.north = neighbor(grid[index - width]);
+        if(y !== 0) neighbors.north = neighbor(grid[index - size]);
         // set south
-        if(y !== height - 1) neighbors.south = neighbor(grid[index + width]);
+        if(y !== size - 1) neighbors.south = neighbor(grid[index + size]);
         // set east
-        if(x !== width - 1) neighbors.east = neighbor(grid[index + 1]);
+        if(x !== size - 1) neighbors.east = neighbor(grid[index + 1]);
         // set west
         if(x !== 0) neighbors.west = neighbor(grid[index - 1]);
 
@@ -45,13 +45,13 @@ const Tile = (x, y, index, value = 0) => {
 }
 
 // creates 'backend' grid of tiles to hold full information of grid (not fully visible to user)
-const Grid = (width = 11, height = 11) => {
-    var grid = counting(width * height).map(index => {
+const Grid = (size = 11) => {
+    var grid = counting(size * size).map(index => {
         return (
-            Tile(index % width, Math.floor(index / height), index)
+            Tile(index % size, Math.floor(index / size), index)
         )
     });
-    grid = addNeighbors(grid, width, height);
+    grid = addNeighbors(grid, size);
 
     return grid;
 }

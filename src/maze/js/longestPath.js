@@ -31,8 +31,8 @@ const generateCosts = (grid, seen, start, current) => {
     return seen;
 }
 
-const longestPath = (grid, width, height, start) => {
-    const seen = generateCosts(grid, zeros(width * height), start, start);
+const longestPath = (grid, size, start) => {
+    const seen = generateCosts(grid, zeros(size * size), start, start);
     return seen.indexOf(Math.max(...seen));
 }
 

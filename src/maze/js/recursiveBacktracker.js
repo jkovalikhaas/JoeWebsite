@@ -43,8 +43,8 @@ const generateMaze = (grid, start, seen) => {
     return grid;
 }
 
-const backtracker = (grid, width, height, start) => {
-    var seen = zeros(width * height);   // visited array
+const backtracker = (grid, size, start) => {
+    var seen = zeros(size * size);   // visited array
     grid = generateMaze(grid, start, seen);
     return grid;
 }

@@ -5,10 +5,9 @@ import colors from '../../globals/colors.js';
 
 const useStyles = createUseStyles({
     base: {
-        height: `${tileSize}px`,
-        width: `${tileSize}px`,
         borderStyle: 'solid',
         borderWidth: '2px',
+        boxSizing: 'border-box',
     }
 });
 
@@ -28,6 +27,7 @@ const Tile = (props) => {
     const {
         tile,
         tileRef,
+        size,
         className = styles.base
     } = props;
 
@@ -41,7 +41,8 @@ const Tile = (props) => {
 
     return (
         <div key={`${x}, ${y}`} className={className} ref={tileRef}
-            style={{backgroundColor: tileColors[value],
+            style={{minWidth: size, minHeight: size, maxWidth: size, maxHeight: size,
+                    backgroundColor: tileColors[value],
                     borderTopColor: isOpen('north'), borderBottomColor: isOpen('south'),
                     borderRightColor: isOpen('east'), borderLeftColor: isOpen('west')}}>
 

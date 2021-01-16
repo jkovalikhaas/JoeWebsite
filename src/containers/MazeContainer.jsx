@@ -14,7 +14,6 @@ import solutionPath from '../maze/js/solutionPath.js';
 import Button from '../components/Button.jsx';
 import SizeSlider from '../components/SizeSlider.jsx';
 import MazeGrid from '../maze/components/MazeGrid.jsx';
-import MiniMap from '../maze/components/MiniMap.jsx';
 
 const useStyles = createUseStyles({
     contentArea: {
@@ -32,22 +31,6 @@ const useStyles = createUseStyles({
         backgroundColor: colors.joeDarkGrayBlue
     },
 });
-
-// calculates grid dimensions in tiles
-const gridDimensions = (contentRef, mazeHeight, mazeWidth) => {
-    // make sure contentRef is valid
-    if(!contentRef.current) return { tileWidth: 11, tileHeight: 11 }
-
-    const navHeight = R.path(['current', 'firstChild'], contentRef).getBoundingClientRect().height;
-    const areaWidth = contentRef.current.getBoundingClientRect().width;
-    const areaHeight = contentRef.current.getBoundingClientRect().height - navHeight * 2;
-
-    const convert = (n) => makeOdd(Math.floor((n - tileSize * 2) / tileSize));
-    const tileWidth = convert(areaWidth)
-    const tileHeight = convert(areaHeight);
-
-    return { tileWidth: Math.min(mazeWidth, tileWidth), tileHeight: Math.min(mazeHeight, tileHeight) }
-}
 
 // movement controller
 const move = (key, maze, current, setCurrent) => {
@@ -81,40 +64,12 @@ const move = (key, maze, current, setCurrent) => {
     }
 }
 
-// returns part of maze that is being shown
-const visibleMaze = (maze, current, width, height) => {
-    const maxX = R.last(maze).x;
-    const maxY = R.last(maze).y;
-    const centerX = Math.floor(width / 2);
-    const centerY = Math.floor(height / 2);
-    var startX = 0; var startY = 0;
-
-    if(current.x <= centerX) startX = 0;
-    else if(current.x >= maxX - centerX) startX = maxX - width + 1;
-    else startX = current.x - centerX;
-
-    if(current.y <= centerY) startY = 0;
-    else if(current.y >= maxY - centerY) startY = maxY - height + 1;
-    else startY = current.y - centerY;
-
-    const array = [];
-    // add all tiles to array that are in visible block
-    maze.forEach(tile => {
-        if(tile.x >= startX && tile.x < startX + width &&
-           tile.y >= startY && tile.y < startY + height)
-            array.push(tile);
-    })
-
-    return array;
-}
-
 const MazeNav = (props) => {
     const styles = useStyles();
 
     const {
         setSize,
         resetMaze,
-        toggleMini,
         toggleSol,
     } = props;
 
@@ -122,7 +77,6 @@ const MazeNav = (props) => {
         <div id={'maze-nav'} className={styles.nav}>
             <SizeSlider setSize={setSize} sizes={[11, 15, 19, 23, 27]}/>
             <Button title={'Start'} action={() => resetMaze()} />
-            <Button title={'MiniMap'} action={() => toggleMini()} />
             <Button title={'Solution'} action={() => toggleSol()} />
         </div>
     )
@@ -132,10 +86,7 @@ const MazeContainer = () => {
     const styles = useStyles();
 
     const [state, setState] = useState({
-        width: 11,
-        height: 11,
-        tileWidth: 11,
-        tileHeight: 11,
+        size: 11,
         maze: [],
         reset: false,
         current: null,
@@ -151,34 +102,23 @@ const MazeContainer = () => {
 
     // create maze
     useEffect(() => {
-        var grid = generateGrid(state.width, state.height);
+        var grid = generateGrid(state.size);
         // create/set start tile
-        const start = grid[randInt(state.width * state.height)];
+        const start = grid[randInt(state.size)];
         grid = setValue(grid, start.index, 'current');
         // generate maze
-        grid = backtracker(grid, state.width, state.height, start);
+        grid = backtracker(grid, state.size, start);
         // create/set last(finish) tile
-        const last = longestPath(grid, state.width, state.height, start);
+        const last = longestPath(grid, state.size, start);
         grid = setValue(grid, last, 'last');
-        // get dimensions of visible grid
-        const { tileWidth, tileHeight } = gridDimensions(contentRef, state.width, state.height);
         // initial state values
         setState(s => ({
             ...s,
             maze: grid,
             current: grid[start.index],
-            tileWidth: tileWidth,
-            tileHeight: tileHeight,
-            visible: state.current && visibleMaze(state.maze, state.current, tileWidth, tileHeight),
             finished: false
         }));
     }, [state.reset]);
-
-    // update visible maze
-    useEffect(() => {
-        if(state.current)
-            setState(s => ({...s, visible: visibleMaze(s.maze, s.current, s.tileWidth, s.tileHeight)}));
-    }, [state.current]);
 
     // add key effects
     useEffect(() => {
@@ -209,11 +149,10 @@ const MazeContainer = () => {
                 return tile;
             })
         }
-        // update grid/visible grid
+        // update grid
         setState((s) => ({
             ...s,
             maze: grid,
-            visible: state.current && visibleMaze(grid, state.current, state.tileWidth, state.tileHeight),
         }));
     };
 
@@ -254,7 +193,7 @@ const MazeContainer = () => {
         <div className={styles.contentArea} ref={contentRef}>
             <MazeNav
                 setSize={(w, h) => setState((s) => 
-                    ({...s, width: w, height: h, reset: !s.reset})
+                    ({...s, size: w, reset: !s.reset})
                 )}
                 resetMaze={() => setState((s) => 
                     ({...s, reset: !s.reset})
@@ -263,17 +202,11 @@ const MazeContainer = () => {
                     ({...s, showingMini: !s.showingMini})
                 )}
                 toggleSol={() => setSolution()} />
-            {state.visible && 
+            {state.maze && 
             <MazeGrid 
-                width={state.tileWidth} 
-                height={state.tileHeight} 
-                grid={state.visible}
+                size={state.size} 
+                grid={state.maze}
                 swipeHandlers={swipeHandlers} />}
-            {state.current && state.showingMini &&
-            <MiniMap
-                width={state.width}
-                height={state.height}
-                maze={state.maze} />}
             <FinishedModal 
                 isOpen={state.finished}
                 completeAction={() => setState((s) => 
