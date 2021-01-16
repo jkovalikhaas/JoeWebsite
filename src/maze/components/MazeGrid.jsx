@@ -11,6 +11,9 @@ const useStyles = createUseStyles({
         maxWidth: isVertical ? '80vw' : '70vh',
         minWidth: isVertical ? '80vw' : '70vh',
         maxHeight: isVertical ? '80vw' : '70vh',
+        cursor: 'pointer',
+        touchAction: 'none',
+        tapHighlightColor: 'transparent'
     },
 });
 
@@ -20,15 +23,16 @@ const MazeGrid = (props) => {
     const {
         size = 11,
         grid,
-        swipeHandlers
     } = props;
 
     const baseRef = useRef(null);
 
     const tileSize = baseRef.current && R.path(['current', 'clientWidth'], baseRef) / size;
+    // removes scroll durring touch move
+    if(baseRef.current) baseRef.current.addEventListener('touchmove', e => e.preventDefault(), {passive: false})
 
     return (
-        <div id={'maze-grid'} className={styles.base} {...swipeHandlers} ref={baseRef}>
+        <div id={'maze-grid'} className={styles.base} ref={baseRef}>
            <GridList cols={size}>
                 {grid.map(tile => {
                    return (

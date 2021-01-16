@@ -5,7 +5,7 @@ import { createUseStyles } from 'react-jss';
 import { useSwipeable } from "react-swipeable";
 import { isMobile } from 'react-device-detect';
 import colors from '../globals/colors.js';
-import { R, randInt, tileSize, makeOdd } from '../globals/variables.jsx';
+import { R, randInt } from '../globals/variables.jsx';
 import FinishedModal from '../components/FinishedModal.jsx';
 import generateGrid, { setValue, isOpen, getNeighbor } from '../maze/js/generateGrid.js';
 import backtracker from '../maze/js/recursiveBacktracker.js';
@@ -21,7 +21,6 @@ const useStyles = createUseStyles({
         maxWidth: '100vw',
         height: isMobile ? '80vh' : '90vh',
         overflow: 'hidden',
-        touchAction: 'none'
     },
     nav: {
         height: '6vh',
@@ -93,12 +92,6 @@ const MazeContainer = () => {
         finished: false,
         showingMini: false
     });
-
-    // holds area around/containing maze
-    const contentRef = useRef(null);
-
-    // removes scroll durring touch move
-    if(contentRef.current) contentRef.current.addEventListener('touchmove', e => e.preventDefault(), {passive: false})
 
     // create maze
     useEffect(() => {
@@ -190,23 +183,19 @@ const MazeContainer = () => {
     });
 
     return (
-        <div className={styles.contentArea} ref={contentRef}>
+        <div className={styles.contentArea} {...swipeHandlers}>
             <MazeNav
-                setSize={(w, h) => setState((s) => 
-                    ({...s, size: w, reset: !s.reset})
+                setSize={(size) => setState((s) => 
+                    ({...s, size: size, reset: !s.reset})
                 )}
                 resetMaze={() => setState((s) => 
                     ({...s, reset: !s.reset})
                 )} 
-                toggleMini={() => setState((s) => 
-                    ({...s, showingMini: !s.showingMini})
-                )}
                 toggleSol={() => setSolution()} />
             {state.maze && 
             <MazeGrid 
                 size={state.size} 
-                grid={state.maze}
-                swipeHandlers={swipeHandlers} />}
+                grid={state.maze} />}
             <FinishedModal 
                 isOpen={state.finished}
                 completeAction={() => setState((s) => 
