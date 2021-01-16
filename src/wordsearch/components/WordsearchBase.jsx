@@ -5,7 +5,6 @@ import colors from '../../globals/colors.js';
 import GridList from '@material-ui/core/GridList';
 import Grid from "../js/generateGrid.js";
 import LetterTile from './LetterTile.jsx';
-import MiniMap from '../../maze/components/MiniMap.jsx';
 
 const useStyles = createUseStyles({
     base: {
@@ -16,7 +15,8 @@ const useStyles = createUseStyles({
         maxHeight: isVertical ? '80vw' : '70vh',
         cursor: 'pointer',
         userSelect: 'none',
-        touchAction: 'none'
+        touchAction: 'none',
+        tapHighlightColor: 'transparent'
     },
 });
 
@@ -44,6 +44,13 @@ const WordsearchBase = (props) => {
     }, [reset]);
 
     useEffect(() => {
+        // ensure selected values are in bounds
+        console.log(state.selected)
+        if(Math.min(...state.selected) < 0 || Math.max(...state.selected) > size * size) {
+            setState((s) => ({...s, selected: []}));
+            return; 
+        }
+
         const letters = stringifyArray(state.selected.map(x => state.letters[x].letter));
         const words = list.map(R.prop('word'));
         const found = words.includes(letters) || words.includes(R.reverse(letters));
@@ -66,9 +73,6 @@ const WordsearchBase = (props) => {
     }, [state.isFound]);
 
     useEffect(() => {
-        // ensure selected values are valid
-        if(Math.min(...state.selected) < 0) return;
-
         setState((s) => ({
             ...s,
             letters: s.letters.map(x => ({
