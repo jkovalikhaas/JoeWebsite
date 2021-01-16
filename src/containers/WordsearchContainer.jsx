@@ -54,7 +54,7 @@ const getUsedWords = (size, list) => {
     const array = [];
     const words = shuffle(R.clone(list));
 
-    while(array.length < size) {
+    while(array.length < size - 2) {
         const elem = words.pop();
         const { word } = elem;
         if(word.length > size || array.includes(elem)) continue;
@@ -79,7 +79,7 @@ const WordsearchNav = (props) => {
 
     return (
         <div id={'wordsearch-nav'} className={styles.nav}>
-             <SizeSlider setSize={setSize} sizes={[10, 12, 14, 16, 18]}/>
+            <SizeSlider setSize={setSize} sizes={[10, 12, 14, 16, 18]}/>
             <Button title={'Start'} action={() => resetSearch()} />
             {/* <Button title={'Save'} action={() => saveWords.forEach(x => saveWord(x.word, x.category))} /> */}
         </div>
@@ -94,7 +94,7 @@ const WordsearchContainer = () => {
         words: null,
         size: 10,
         reset: false,
-        finished: false
+        finished: false,
     });
 
     // full list of words
@@ -120,7 +120,7 @@ const WordsearchContainer = () => {
                 finished: true,
             }))
     }, [state.words]);
- 
+
     return (
         <div className={styles.contentArea}>
             <WordsearchNav
@@ -136,6 +136,9 @@ const WordsearchContainer = () => {
                 list={state.words} 
                 size={state.size}
                 reset={state.reset}
+                setLoading={(x) => setState((s) => 
+                    ({...s, isLoading: x})
+                )}
                 resetSearch={() => setState((s) => 
                     ({...s, reset: !s.reset})
                 )}

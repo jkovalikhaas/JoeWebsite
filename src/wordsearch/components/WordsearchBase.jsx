@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { createUseStyles } from 'react-jss';
 import { R, isVertical, stringifyArray } from '../../globals/variables.jsx';
 import colors from '../../globals/colors.js';
+import LoadingScreen from '../../components/LoadingScreen.jsx';
 import GridList from '@material-ui/core/GridList';
 import Grid from "../js/generateGrid.js";
 import LetterTile from './LetterTile.jsx';
@@ -18,6 +19,14 @@ const useStyles = createUseStyles({
         touchAction: 'none',
         tapHighlightColor: 'transparent'
     },
+    loading: {
+        margin: isVertical ? '4vh auto 4vh auto' : '4vh 0 4vh 4vw',
+        maxWidth: isVertical ? '80vw' : '70vh',
+        minWidth: isVertical ? '80vw' : '70vh',
+        minHeight: isVertical ? '80vw' : '70vh',
+        maxHeight: isVertical ? '80vw' : '70vh',
+        textAlign: 'center'
+    }
 });
 
 const WordsearchBase = (props) => {
@@ -35,17 +44,18 @@ const WordsearchBase = (props) => {
         letters: Grid(list, size),
         mouseStart: null,
         selected: [],
-        isFound: false
+        isFound: false,
+        isLoading: true
     });
 
     const baseRef = useRef(null);
 
     useEffect(() => {
         const grid = Grid(list, size);
-        if(R.isNil(grid))
-            resetSearch();
-        else
-            setState((s) => ({...s, letters: grid}));
+        if(R.isNil(grid)) resetSearch();
+        else {
+            setState((s) => ({...s, letters: grid, isLoading: false}));
+        }
     }, [reset]);
 
     useEffect(() => {
@@ -138,34 +148,39 @@ const WordsearchBase = (props) => {
     }
 
     return (
-        <div className={styles.base} ref={baseRef} 
-             onMouseDown={(e) => setState((s) => 
-                    ({...s, mouseStart: e})
-                )} 
-             onTouchStart={(e) => setState((s) => 
-                    ({...s, mouseStart: e.changedTouches[0]})
-                )}
-             onMouseUp={() => setState((s) => 
-                    ({...s, mouseStart: null, isFound: !s.isFound})
-                )}
-             onTouchEnd={() => setState((s) => 
-                    ({...s, mouseStart: null, isFound: !s.isFound})
-                )}
-             onMouseMove={(e) => state.mouseStart && handleClick(e)}
-             onTouchMove={(e) => state.mouseStart && handleClick(e.changedTouches[0])}
-             onMouseLeave={() => setState((s) => 
-                    ({...s, mouseStart: null, isFound: !s.isFound})
-                )}>
-            {tileSize && 
-            <GridList cols={size}>
-                {state.letters.map((letter, idx) => {
-                    return <LetterTile 
-                                tile={letter} 
-                                size={tileSize}
-                                key={letter + idx}/>
-                })}
-            </GridList>}
-        </div>
+        <>
+        {state.isLoading ?
+            <LoadingScreen className={styles.loading}/> :
+            <div className={styles.base} ref={baseRef} 
+                onMouseDown={(e) => setState((s) => 
+                        ({...s, mouseStart: e})
+                    )} 
+                onTouchStart={(e) => setState((s) => 
+                        ({...s, mouseStart: e.changedTouches[0]})
+                    )}
+                onMouseUp={() => setState((s) => 
+                        ({...s, mouseStart: null, isFound: !s.isFound})
+                    )}
+                onTouchEnd={() => setState((s) => 
+                        ({...s, mouseStart: null, isFound: !s.isFound})
+                    )}
+                onMouseMove={(e) => state.mouseStart && handleClick(e)}
+                onTouchMove={(e) => state.mouseStart && handleClick(e.changedTouches[0])}
+                onMouseLeave={() => setState((s) => 
+                        ({...s, mouseStart: null, isFound: !s.isFound})
+                    )}>
+                {tileSize && 
+                <GridList cols={size}>
+                    {state.letters.map((letter, idx) => {
+                        return <LetterTile 
+                                    tile={letter} 
+                                    size={tileSize}
+                                    key={letter + idx}/>
+                    })}
+                </GridList>}
+            </div>
+        }
+        </>
     )
 }
 
