@@ -54,7 +54,7 @@ const WordsearchBase = (props) => {
         const grid = Grid(list, size);
         if(R.isNil(grid)) resetSearch();
         else {
-            setState((s) => ({...s, letters: grid, isLoading: false}));
+            setState((s) => ({...s, letters: grid, isLoading: false, isFound: false}));
         }
     }, [reset]);
 

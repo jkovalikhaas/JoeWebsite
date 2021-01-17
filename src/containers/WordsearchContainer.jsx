@@ -32,12 +32,13 @@ const GetWords = () => {
 
     useEffect(() => {
         Promise.all([fetchWords()]).then((src) => {
-            setState((s) => ({ ...s, words: src[0].map(x => {
+            setState((s) => ({ ...s, words: src[0].map((x, i) => {
                     return {
                         label: x.word,
                         word: x.word.toLowerCase().split(" ").join(""),
                         categories: x.category.split(','),
-                        found: false
+                        found: false,
+                        index: i
                     }
                 }) 
             }));
@@ -94,6 +95,7 @@ const WordsearchContainer = () => {
         words: null,
         size: 10,
         reset: false,
+        resetLetters: false,
         finished: false,
     });
 
@@ -108,6 +110,7 @@ const WordsearchContainer = () => {
         setState((s) => ({
             ...s, 
             finished: false,
+            resetLetters: !s.resetLetters,
             words: list && getUsedWords(state.size, list)
         }))
     }, [words, state.reset]);
@@ -135,7 +138,7 @@ const WordsearchContainer = () => {
             <WordsearchBase 
                 list={state.words} 
                 size={state.size}
-                reset={state.reset}
+                reset={state.resetLetters}
                 setLoading={(x) => setState((s) => 
                     ({...s, isLoading: x})
                 )}
