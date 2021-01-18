@@ -109,9 +109,13 @@ const WordsearchBase = (props) => {
         const startX = Math.floor((state.mouseStart.clientX - x) / tileSize);
         const startY = Math.floor((state.mouseStart.clientY - y) / tileSize);
         const startIndex = startX + startY * size;
+        // return if any start values are out of bounds
+        if(startX < 0 || startX > size - 1 || startY < 0 || startY > size - 1) return;
         // coordinates of current mouse pos
         const clickX = Math.floor((e.clientX - x) / tileSize);
         const clickY = Math.floor((e.clientY - y) / tileSize);
+        // return if any click values are out of bounds
+        if(clickX < 0 || clickX > size - 1 || clickY < 0 || clickY > size - 1) return;
         // slope from start to current
         const slope = Math.abs((clickY - startY) / (clickX - startX));
 

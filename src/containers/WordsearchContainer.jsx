@@ -135,7 +135,7 @@ const WordsearchContainer = () => {
                 )}  />
             {state.words && 
             <div style={{display: 'flex', flexDirection: isVertical ? 'column' : 'row'}}>
-            <WordsearchBase 
+            <WordsearchBase
                 list={state.words} 
                 size={state.size}
                 reset={state.resetLetters}
