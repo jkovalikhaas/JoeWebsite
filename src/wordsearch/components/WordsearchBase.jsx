@@ -62,7 +62,7 @@ const WordsearchBase = (props) => {
         // ensure selected values are in bounds
         if(Math.min(...state.selected) < 0 || Math.max(...state.selected) > size * size) {
             setState((s) => ({...s, selected: []}));
-            return; 
+            return;
         }
 
         const letters = stringifyArray(state.selected.map(x => state.letters[x].letter));

@@ -26,10 +26,12 @@ const WordList = (props) => {
         list
     } = props;
 
+    const sorted = R.sortBy(R.prop('word'))(list);
+
     return (
         <div className={styles.base}>
             <GridList cols={isVertical ? 3 : 1}>
-                {list.map((word, idx) => {
+                {sorted.map((word, idx) => {
                     const { label, found } = word;
                     return (
                         <div className={styles.word} key={word + idx} 

@@ -34,7 +34,7 @@ const placeWord = (grid, word, start, dir, size) => {
         const index = start + R.head(Object.values(dir))(i, size);
         const letter = word[i];
         // checks interect with other words
-        if (grid[index] != "" && grid[index] != letter) break; 
+        if (grid[index] !== "" && grid[index] !== letter) break; 
         else temp[index] = letter;
     }
 
@@ -42,7 +42,7 @@ const placeWord = (grid, word, start, dir, size) => {
 }
 
 // generate letter objects for each index
-const getLetters = (grid, size) => {
+const getLetters = (grid) => {
     return grid.map((x, i) => {
         const isPlaced = !R.equals(x, "");
         return {
@@ -76,7 +76,7 @@ const Grid = (list, size) => {
         if (R.isEmpty(current.dirs)) {
             current.positions.pop();
             current.dirs = shuffle([...fullDirs]);
-        } 
+        }
 
         if (R.isEmpty(current.positions)) {
             // no possible positions for this word
@@ -92,7 +92,7 @@ const Grid = (list, size) => {
         }
     }
 
-    return getLetters(R.isNil(finalGrid) ? strings(size * size) : finalGrid, size);
+    return getLetters(R.isNil(finalGrid) ? strings(size * size) : finalGrid);
 }
 
 export default Grid;
